@@ -53,14 +53,14 @@ body {
 }
 
 #time-step-list-container.idle::-webkit-scrollbar-thumb {
-  background-color: #1e7d33;
+  background-color: #136d27;
 }
 #time-step-list-container.work::-webkit-scrollbar-thumb {
-  background-color: #66261e;
+  background-color: #591e16;
 }
 #time-step-list-container.short::-webkit-scrollbar-thumb {
-  background-color: #11435c;
+  background-color: #0c364b;
 }
 #time-step-list-container.long::-webkit-scrollbar-thumb {
-  background-color: #4b337a;
+  background-color: #372063;
 }

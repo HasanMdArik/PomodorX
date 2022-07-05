@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import TimeSteps from "../components/timeSteps";
-import { componentBackgrounds } from "../data/data";
+import { componentBackgrounds, primaryColors } from "../data/data";
 import "../styles/global.css";
 
 // markup
@@ -41,7 +41,10 @@ const IndexPage = () => {
               />
             </svg>
             <div className="absolute top-9">
-              <h1 style={{ fontSize: "40px" }} className="pl-5">
+              <h1
+                style={{ fontSize: "40px", color: primaryColors[state] }}
+                className="pl-5"
+              >
                 PomodorX
               </h1>
             </div>
