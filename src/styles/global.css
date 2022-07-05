@@ -215,11 +215,11 @@ input[type="number"] {
 }
 #up .arr {
   border-top: 0;
-  border-bottom: 18px solid var(--main-color);
-  margin-bottom: 2px;
+  border-bottom: 15px solid var(--main-color);
+  margin-bottom: 1px;
 }
 #down .arr {
   border-bottom: 0;
-  border-top: 18px solid var(--main-color);
-  margin-top: 2px;
+  border-top: 15px solid var(--main-color);
+  margin-top: 1px;
 }
