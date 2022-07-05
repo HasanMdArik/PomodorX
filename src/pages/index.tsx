@@ -32,7 +32,7 @@ const IndexPage = () => {
       <main id="main" className={"flex " + stateNames[state]}>
         <div className="h-screen">
           <div className="relative mb-20">
-            <svg width="380" viewBox="0 0 561 193" fill="none">
+            <svg width="400" viewBox="0 0 561 193" fill="none">
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
