@@ -21,6 +21,7 @@ const LoopInput = () => {
             placeholder="Number of times you want to do the loop"
             type="number"
             id="loopCount"
+            className="main-border"
           />
           <div className="loopButtons absolute right-3">
             <button
@@ -44,6 +45,14 @@ const LoopInput = () => {
             </button>
           </div>
         </div>
+      </div>
+      <div className="flex justify-center mt-3">
+        <button
+          className="primary-bg main-border rounded-[1.25rem] text-3xl py-1.5 px-10"
+          id="submitButton"
+        >
+          Start
+        </button>
       </div>
     </div>
   );
