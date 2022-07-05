@@ -10,6 +10,32 @@ body {
   overflow: hidden !important;
 }
 
+/* Changing the colors depending on the state (derivec by className at #main) */
+#main.idle {
+  --primary-color: #136d27;
+  --bg-color: #3dfc66;
+}
+#main.work {
+  --primary-color: #591e16;
+  --bg-color: #e65543;
+}
+#main.short {
+  --primary-color: #0c364b;
+  --bg-color: #2aa1db;
+}
+#main.long {
+  --primary-color: #372063;
+  --bg-color: #9868fa;
+}
+
+/* Some util rules */
+.primary-bg {
+  background-color: var(--bg-color);
+}
+.primary-color {
+  color: var(--primary-color);
+}
+
 /* The container holding the time list */
 #time-step-list-container {
   overflow-y: scroll !important;
@@ -23,6 +49,7 @@ body {
 }
 
 #time-step-list li {
+  position: relative;
   background-color: rgba(0, 0, 0, 0.1);
   width: 300px;
   padding: 0.5rem 0.75rem;
@@ -35,7 +62,18 @@ body {
   margin: 0 0 0 -1.25rem;
 }
 
-/* The Scrollbar related styles */
+/*** The time block styles ***/
+.time.work-time {
+  --time: 25s;
+}
+.time.work-time {
+  --time: 25s;
+}
+.time.work-time {
+  --time: 25s;
+}
+
+/*** The Scrollbar related styles ***/
 #time-step-list-container::-webkit-scrollbar {
   width: 16px;
 }
@@ -50,17 +88,5 @@ body {
   border-radius: 20px;
   border: 6px solid transparent;
   background-clip: content-box;
-}
-
-#time-step-list-container.idle::-webkit-scrollbar-thumb {
-  background-color: #136d27;
-}
-#time-step-list-container.work::-webkit-scrollbar-thumb {
-  background-color: #591e16;
-}
-#time-step-list-container.short::-webkit-scrollbar-thumb {
-  background-color: #0c364b;
-}
-#time-step-list-container.long::-webkit-scrollbar-thumb {
-  background-color: #372063;
+  background-color: var(--primary-color);
 }

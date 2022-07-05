@@ -1,7 +1,5 @@
 import React, { useLayoutEffect } from "react";
-import { componentBackgrounds, primaryColors } from "../data/data";
-
-const states = ["idle", "work", "short", "long"];
+import { stateNames } from "../data/data";
 
 const TimeSteps = ({ state }: { state: number }) => {
   useLayoutEffect(() => {
@@ -14,31 +12,29 @@ const TimeSteps = ({ state }: { state: number }) => {
   }, []);
 
   return (
-    <div
-      style={{
-        background: componentBackgrounds[state],
-        color: primaryColors[state],
-      }}
-      className="h-full w-[25rem]  rounded-r-3xl pt-7 pl-5 relative"
-    >
+    <div className="h-full w-[25rem] rounded-r-3xl pt-7 pl-5 relative primary-color primary-bg">
       <h2 className="mb-1 text-4xl">Time Steps</h2>
       <div
-        className="mt-1 left-0 absolute"
+        className="mt-1 left-0 absolute primary-bg"
         style={{
           height: "3px",
           width: "80%",
-          background: primaryColors[state],
         }}
       />
       <div
         id="time-step-list-container"
         data-color={"#1e7d33"}
-        className={"mt-8 " + states[state]}
+        className={"mt-8 " + stateNames[state]}
       >
         <ul id="time-step-list" className="text-3xl list-disc list-inside">
-          <li>
-            <p>25-min work</p>
-          </li>
+          <div className="time work-time">
+            <li>
+              <p>25-min work</p>
+            </li>
+            <li className="progress">
+              <p>25-min work</p>
+            </li>
+          </div>
           <li>
             <p>5-min break</p>
           </li>

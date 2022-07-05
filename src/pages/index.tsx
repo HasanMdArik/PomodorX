@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import TimeSteps from "../components/timeSteps";
-import { componentBackgrounds, primaryColors } from "../data/data";
+import { componentBackgrounds, stateNames } from "../data/data";
 import "../styles/global.css";
 
 // markup
@@ -11,7 +11,7 @@ const IndexPage = () => {
   // 1 stands for work time
   // 2 stands for short break
   // 3 stands for long break
-  const [state, setState] = useState(0);
+  const [state, setState] = useState(1);
 
   return (
     <React.Fragment>
@@ -29,7 +29,7 @@ const IndexPage = () => {
         <title>PomodorX</title>
       </Helmet>
 
-      <main className="flex">
+      <main id="main" className={"flex " + stateNames[state]}>
         <div className="h-screen">
           <div className="relative mb-20">
             <svg width="400" viewBox="0 0 561 193" fill="none">
@@ -41,10 +41,7 @@ const IndexPage = () => {
               />
             </svg>
             <div className="absolute top-9">
-              <h1
-                style={{ fontSize: "40px", color: primaryColors[state] }}
-                className="pl-5"
-              >
+              <h1 style={{ fontSize: "40px" }} className="pl-5 primary-color">
                 PomodorX
               </h1>
             </div>
