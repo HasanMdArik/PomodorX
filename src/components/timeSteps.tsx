@@ -28,15 +28,19 @@ const TimeSteps = ({ state }: { state: number }) => {
         className={"mt-8 font-medium " + stateNames[state]}
       >
         <ul id="time-step-list" className="text-3xl list-disc list-inside">
-          <div className="time finished work-time">
-            <li>
-              <p>25-min work</p>
-            </li>
-            <li className="progress">
-              <p>25-min work</p>
-            </li>
+          <div className="time active work-time">
+            <div>
+              <li>
+                <p>25-min work</p>
+              </li>
+            </div>
+            <div className="progress">
+              <li>
+                <p>25-min work</p>
+              </li>
+            </div>
           </div>
-          <div className="time active short-time">
+          {/* <div className="time active short-time">
             <li>
               <p>5-min break</p>
             </li>
@@ -51,7 +55,7 @@ const TimeSteps = ({ state }: { state: number }) => {
             <li className="progress">
               <p>30-min break</p>
             </li>
-          </div>
+          </div> */}
         </ul>
       </div>
     </div>

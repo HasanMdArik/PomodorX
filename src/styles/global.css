@@ -77,41 +77,55 @@ body {
   position: relative;
 }
 /* time block's text */
-.time li p {
+
+/*? For Reference ?*/
+/*<div className="time active work-time">
+    <div>
+      <li>
+        <p>25-min work</p>
+      </li>
+    </div>
+    <div className="progress">
+      <li>
+        <p>25-min work</p>
+      </li>
+    </div> 
+  </div>     
+*/
+
+.time p {
   display: inline;
   width: 100%;
   margin: 0 0 0 -1.25rem;
 }
 
-.time li {
+.time div {
   position: relative;
   background-color: rgba(0, 0, 0, 0.1);
   height: 52px;
   width: 300px;
-  padding: 0.5rem 0.75rem;
   border-radius: 0.5rem;
 }
 
-.time .progress {
+.time div li {
+  padding: 0.5rem 0.75rem;
+}
+
+.time div.progress {
   position: absolute;
   top: 0px;
   background-color: var(--secondary-bg);
   color: var(--primary-bg);
   overflow: hidden;
   white-space: nowrap;
-  padding: 0rem;
   width: 0%;
 }
 
-.time .progress li {
-  padding: 0.5rem 0.75rem;
-}
 .time.active .progress {
   animation: widthAnim var(--time) linear 0s 1 forwards;
 }
 
 .time.finished .progress {
-  padding: 0.5rem 0.75rem;
   width: 100%;
 }
 
