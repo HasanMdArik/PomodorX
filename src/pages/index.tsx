@@ -32,7 +32,7 @@ const IndexPage = () => {
       <main id="main" className={"flex " + stateNames[state]}>
         <div className="h-screen">
           <div className="relative mb-20">
-            <svg width="400" viewBox="0 0 561 193" fill="none">
+            <svg width="380" viewBox="0 0 561 193" fill="none">
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -49,11 +49,7 @@ const IndexPage = () => {
           <TimeSteps state={state} />
         </div>
 
-        <div
-          // ! To be removed
-          style={{ background: "#ef12da" }}
-          className="flex w-full h-screen justify-center items-center"
-        >
+        <div className="flex w-full h-screen justify-center items-center">
           <div>
             {/* !!! To Be Added As A Component */}
             <h2>Loop Count:</h2>
