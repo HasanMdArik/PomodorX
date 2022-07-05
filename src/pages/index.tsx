@@ -11,7 +11,7 @@ const IndexPage = () => {
   // 1 stands for work time
   // 2 stands for short break
   // 3 stands for long break
-  const [state, setState] = useState(1);
+  const [state, setState] = useState(3);
 
   return (
     <React.Fragment>

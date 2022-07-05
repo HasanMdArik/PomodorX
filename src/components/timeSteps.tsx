@@ -36,7 +36,7 @@ const TimeSteps = ({ state }: { state: number }) => {
               <p>25-min work</p>
             </li>
           </div>
-          <div className="time finished short-time">
+          <div className="time active short-time">
             <li>
               <p>5-min break</p>
             </li>
@@ -44,7 +44,7 @@ const TimeSteps = ({ state }: { state: number }) => {
               <p>5-min break</p>
             </li>
           </div>
-          <div className="time active long-time">
+          <div className="time long-time">
             <li>
               <p>30-min break</p>
             </li>

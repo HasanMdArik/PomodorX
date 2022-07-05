@@ -53,13 +53,13 @@ body {
 /*** The time block styles ***/
 /* Progress period depending on block-type */
 .time.work-time {
-  --time: 25s;
+  --time: 1500s;
 }
 .time.short-time {
-  --time: 5s;
+  --time: 300s;
 }
 .time.long-time {
-  --time: 30s;
+  --time: 1800s;
 }
 /* The block holder */
 .time {

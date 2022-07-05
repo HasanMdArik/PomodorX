@@ -2,7 +2,7 @@ import type { GatsbyConfig } from "gatsby";
 
 const config: GatsbyConfig = {
   siteMetadata: {
-    title: `pomodorox`,
+    title: `pomodorx`,
     siteUrl: `https://www.yourdomain.tld`,
   },
   plugins: ["gatsby-plugin-react-helmet", "gatsby-plugin-postcss"],
