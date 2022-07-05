@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import LoopInput from "../components/loopInput";
-import TimeSteps from "../components/timeSteps";
+import TimeStepsMenu from "../components/timeStepsMenu/timeStepsMenu";
 import { componentBackgrounds, stateNames } from "../data/data";
 import "../styles/global.css";
 
@@ -47,7 +47,7 @@ const IndexPage = () => {
               </h1>
             </div>
           </div>
-          <TimeSteps state={state} />
+          <TimeStepsMenu state={state} />
         </div>
 
         <div className="flex w-full h-screen justify-center items-center">
