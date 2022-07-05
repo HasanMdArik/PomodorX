@@ -25,7 +25,7 @@ const TimeSteps = ({ state }: { state: number }) => {
       <div
         id="time-step-list-container"
         data-color={"#1e7d33"}
-        className={"mt-8 " + stateNames[state]}
+        className={"mt-8 font-medium " + stateNames[state]}
       >
         <ul id="time-step-list" className="text-3xl list-disc list-inside">
           <div className="time finished work-time">

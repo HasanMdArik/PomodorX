@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
+import LoopInput from "../components/loopInput";
 import TimeSteps from "../components/timeSteps";
 import { componentBackgrounds, stateNames } from "../data/data";
 import "../styles/global.css";
@@ -11,7 +12,7 @@ const IndexPage = () => {
   // 1 stands for work time
   // 2 stands for short break
   // 3 stands for long break
-  const [state, setState] = useState(3);
+  const [state, setState] = useState(0);
 
   return (
     <React.Fragment>
@@ -51,8 +52,7 @@ const IndexPage = () => {
 
         <div className="flex w-full h-screen justify-center items-center">
           <div>
-            {/* !!! To Be Added As A Component */}
-            <h2>Loop Count:</h2>
+            <LoopInput />
           </div>
         </div>
       </main>

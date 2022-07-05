@@ -1,35 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*** Main color ***/
+:root {
+  --main-color: rgb(2, 15, 30);
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: "Proza Libre", sans-serif !important;
   font-weight: 600;
-  color: #020f1e;
+  color: var(--main-color);
   overflow: hidden !important;
 }
 
-/*** Changing the colors depending on the state (derivec by className at #main) ***/
+/*** Changing the colors depending on the state (derived by className at #main) ***/
 #main.idle {
-  --primary-color: #136d27;
-  --primary-bg: #3dfc66;
-  --secondary-bg: #fff;
+  --primary-color: rgb(19, 109, 39);
+  --primary-bg: rgb(61, 252, 102);
+  --secondary-bg: rgb(255, 255, 255);
 }
 #main.work {
-  --primary-color: #591e16;
-  --primary-bg: #e65543;
-  --secondary-bg: #ffd1b3;
+  --primary-color: rgb(89, 30, 22);
+  --primary-bg: rgb(230, 85, 67);
+  --secondary-bg: rgb(255, 209, 179);
 }
 #main.short {
-  --primary-color: #0c364b;
-  --primary-bg: #2aa1db;
-  --secondary-bg: #a3d7ff;
+  --primary-color: rgb(12, 54, 75);
+  --primary-bg: rgb(42, 161, 219);
+  --secondary-bg: rgb(163, 215, 255);
 }
 #main.long {
-  --primary-color: #372063;
-  --primary-bg: #9868fa;
-  --secondary-bg: #ffd4ff;
+  --primary-color: rgb(55, 32, 99);
+  --primary-bg: rgb(152, 104, 250);
+  --secondary-bg: rgb(255, 212, 255);
 }
 
 /*** Some util rules ***/
@@ -129,4 +135,69 @@ body {
   border: 6px solid transparent;
   background-clip: content-box;
   background-color: var(--primary-color);
+}
+
+/*** The styles of loop-input ***/
+#loopCount {
+  width: 200px;
+  height: 54px;
+  border-radius: 20px;
+  border: 4px solid var(--main-color);
+  background-color: #3dfc66;
+  font-size: 26px;
+  line-height: 32px;
+  padding: 0.25rem 1rem;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+  margin: 0;
+}
+
+/* The incrementor and decrementor button style */
+.loopButtons {
+  display: flex;
+  flex-direction: column;
+}
+
+.loopButton {
+  border: none !important;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loopButton:focus,
+.loopButton:active {
+  border: none !important;
+  outline: none !important;
+}
+
+.loopButton:disabled {
+  --main-color: rgba(2, 15, 30, 0.5);
+}
+
+.arr {
+  height: 0;
+  width: 0;
+  border: 9px solid transparent;
+}
+#up .arr {
+  border-top: 0;
+  border-bottom: 18px solid var(--main-color);
+  margin-bottom: 2px;
+}
+#down .arr {
+  border-bottom: 0;
+  border-top: 18px solid var(--main-color);
+  margin-top: 2px;
 }
