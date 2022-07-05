@@ -13,24 +13,28 @@ body {
 /*** Changing the colors depending on the state (derivec by className at #main) ***/
 #main.idle {
   --primary-color: #136d27;
-  --bg-color: #3dfc66;
+  --primary-bg: #3dfc66;
+  --secondary-bg: #fff;
 }
 #main.work {
   --primary-color: #591e16;
-  --bg-color: #e65543;
+  --primary-bg: #e65543;
+  --secondary-bg: #ffd1b3;
 }
 #main.short {
   --primary-color: #0c364b;
-  --bg-color: #2aa1db;
+  --primary-bg: #2aa1db;
+  --secondary-bg: #a3d7ff;
 }
 #main.long {
   --primary-color: #372063;
-  --bg-color: #9868fa;
+  --primary-bg: #9868fa;
+  --secondary-bg: #ffd4ff;
 }
 
 /*** Some util rules ***/
 .primary-bg {
-  background-color: var(--bg-color);
+  background-color: var(--primary-bg);
 }
 .primary-color {
   color: var(--primary-color);
@@ -40,31 +44,13 @@ body {
 #time-step-list-container {
   overflow-y: scroll !important;
   direction: rtl;
-  width: 320px;
+  width: 340px;
 }
 #time-step-list {
   direction: ltr;
 }
 
 /*** The time block styles ***/
-.time {
-  width: 300px;
-  position: relative;
-}
-.time li {
-  position: relative;
-  background-color: rgba(0, 0, 0, 0.1);
-  width: 300px;
-  padding: 0.5rem 0.75rem;
-  margin: 0.25rem 0rem;
-  border-radius: 0.5rem;
-}
-
-.time li p {
-  display: inline;
-  margin: 0 0 0 -1.25rem;
-}
-
 /* Progress period depending on block-type */
 .time.work-time {
   --time: 25s;
@@ -74,6 +60,57 @@ body {
 }
 .time.long-time {
   --time: 30s;
+}
+/* The block holder */
+.time {
+  width: 300px;
+  margin: 0.25rem 0rem;
+  position: relative;
+}
+/* time block's text */
+.time li p {
+  display: inline;
+  width: 100%;
+  margin: 0 0 0 -1.25rem;
+}
+
+.time li {
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.1);
+  height: 52px;
+  width: 300px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.time .progress {
+  position: absolute;
+  top: 0px;
+  background-color: var(--secondary-bg);
+  color: var(--primary-bg);
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0rem;
+  width: 0%;
+}
+
+.time.active .progress {
+  padding: 0.5rem 0.75rem;
+  animation: widthAnim var(--time) linear 0s 1 forwards;
+}
+
+.time.finished .progress {
+  padding: 0.5rem 0.75rem;
+  width: 100%;
+}
+
+@keyframes widthAnim {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
 }
 
 /*** The Scrollbar related styles ***/
