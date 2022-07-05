@@ -93,6 +93,13 @@ body {
   </div>     
 */
 
+.time {
+  height: 52px;
+  width: 300px;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
 .time p {
   display: inline;
   width: 100%;
@@ -102,9 +109,6 @@ body {
 .time div {
   position: relative;
   background-color: rgba(0, 0, 0, 0.1);
-  height: 52px;
-  width: 300px;
-  border-radius: 0.5rem;
 }
 
 .time div li {
