@@ -10,7 +10,7 @@ body {
   overflow: hidden !important;
 }
 
-/* Changing the colors depending on the state (derivec by className at #main) */
+/*** Changing the colors depending on the state (derivec by className at #main) ***/
 #main.idle {
   --primary-color: #136d27;
   --bg-color: #3dfc66;
@@ -28,7 +28,7 @@ body {
   --bg-color: #9868fa;
 }
 
-/* Some util rules */
+/*** Some util rules ***/
 .primary-bg {
   background-color: var(--bg-color);
 }
@@ -36,19 +36,22 @@ body {
   color: var(--primary-color);
 }
 
-/* The container holding the time list */
+/*** The time list styles ***/
 #time-step-list-container {
   overflow-y: scroll !important;
   direction: rtl;
   width: 320px;
 }
-
-/* The time list styles */
 #time-step-list {
   direction: ltr;
 }
 
-#time-step-list li {
+/*** The time block styles ***/
+.time {
+  width: 300px;
+  position: relative;
+}
+.time li {
   position: relative;
   background-color: rgba(0, 0, 0, 0.1);
   width: 300px;
@@ -57,20 +60,20 @@ body {
   border-radius: 0.5rem;
 }
 
-#time-step-list li p {
+.time li p {
   display: inline;
   margin: 0 0 0 -1.25rem;
 }
 
-/*** The time block styles ***/
+/* Progress period depending on block-type */
 .time.work-time {
   --time: 25s;
 }
-.time.work-time {
-  --time: 25s;
+.time.short-time {
+  --time: 5s;
 }
-.time.work-time {
-  --time: 25s;
+.time.long-time {
+  --time: 30s;
 }
 
 /*** The Scrollbar related styles ***/

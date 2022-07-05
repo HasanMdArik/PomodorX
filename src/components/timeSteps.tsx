@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from "react";
-import { stateNames } from "../data/data";
+import { primaryColors, stateNames } from "../data/data";
 
 const TimeSteps = ({ state }: { state: number }) => {
   useLayoutEffect(() => {
@@ -12,13 +12,14 @@ const TimeSteps = ({ state }: { state: number }) => {
   }, []);
 
   return (
-    <div className="h-full w-[25rem] rounded-r-3xl pt-7 pl-5 relative primary-color primary-bg">
+    <div className="h-full w-[23.75rem] rounded-r-3xl pt-7 pl-5 relative primary-color primary-bg">
       <h2 className="mb-1 text-4xl">Time Steps</h2>
       <div
         className="mt-1 left-0 absolute primary-bg"
         style={{
           height: "3px",
           width: "80%",
+          backgroundColor: primaryColors[state],
         }}
       />
       <div
@@ -35,39 +36,22 @@ const TimeSteps = ({ state }: { state: number }) => {
               <p>25-min work</p>
             </li>
           </div>
-          <li>
-            <p>5-min break</p>
-          </li>
-          <li>
-            <p>25-min work</p>
-          </li>
-          <li>
-            <p>5-min break</p>
-          </li>
-          <li>
-            <p>25-min work</p>
-          </li>
-          <li>
-            <p>5-min break</p>
-          </li>
-          <li>
-            <p>25-min work</p>
-          </li>
-          <li>
-            <p>30-min break</p>
-          </li>
-          <li>
-            <p>25-min work</p>
-          </li>
-          <li>
-            <p>5-min break</p>
-          </li>
-          <li>
-            <p>25-min work</p>
-          </li>
-          <li>
-            <p>5-min break</p>
-          </li>
+          <div className="time short-time">
+            <li>
+              <p>5-min break</p>
+            </li>
+            <li className="progress">
+              <p>5-min break</p>
+            </li>
+          </div>
+          <div className="time long-time">
+            <li>
+              <p>30-min break</p>
+            </li>
+            <li className="progress">
+              <p>30-min break</p>
+            </li>
+          </div>
         </ul>
       </div>
     </div>
