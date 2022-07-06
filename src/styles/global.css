@@ -52,6 +52,9 @@ body {
 .main-border {
   border: 4px solid var(--main-color);
 }
+.primary-border {
+  border: 4px solid var(--primary-color);
+}
 
 /*** The time list styles ***/
 #time-step-list-container {
