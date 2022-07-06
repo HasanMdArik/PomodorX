@@ -60,16 +60,6 @@ body {
 }
 
 /*** The time block styles ***/
-/* Progress period depending on block-type */
-.time.work-time {
-  --time: 1500s;
-}
-.time.short-time {
-  --time: 300s;
-}
-.time.long-time {
-  --time: 1800s;
-}
 /* The block holder */
 .time {
   width: 300px;
@@ -111,6 +101,10 @@ body {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
+.time.active div {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
 .time div li {
   padding: 0.5rem 0.75rem;
 }
@@ -126,6 +120,7 @@ body {
 }
 
 .time.active .progress {
+  /* The --time variable is taken from inline style */
   animation: widthAnim var(--time) linear 0s 1 forwards;
 }
 
@@ -134,9 +129,6 @@ body {
 }
 
 @keyframes widthAnim {
-  from {
-    width: 0%;
-  }
   to {
     width: 100%;
   }
@@ -165,7 +157,7 @@ body {
   width: 200px;
   height: 54px;
   border-radius: 20px;
-  background-color: #3dfc66;
+  background-color: var(--primary-bg);
   font-size: 26px;
   line-height: 32px;
   padding: 0.25rem 1rem;
