@@ -251,5 +251,7 @@ input[type="number"] {
   background-color: rgba(61, 252, 102, 0.5);
 }
 #startButton:disabled {
-  opacity: 0.7;
+  background-color: rgba(61, 252, 102, 0.7);
+  color: rgb(2, 5, 15, 0.7);
+  border-color: rgb(2, 5, 15, 0.7);
 }
