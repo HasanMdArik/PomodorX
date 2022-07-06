@@ -1,8 +1,15 @@
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
+import { useMainContext } from "../../contexts/mainContext";
 import { primaryColors, stateNames } from "../../data/data";
 import TimeStepBlock from "./timeStepBlock";
 
 const TimeStepsMenu = ({ state }: { state: number }) => {
+  const { stepsData } = useMainContext();
+
+  useEffect(() => {
+    console.log(stepsData);
+  }, [stepsData]);
+
   useLayoutEffect(() => {
     let viewPortHeight = window.innerHeight;
     let timeStepList = document.getElementById("time-step-list-container");
