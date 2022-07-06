@@ -10,7 +10,7 @@ export const useMainContext = () => {
 const MainContextProvider = ({ children }: { children: ReactNode }) => {
   const [stepsData, setStepsData] = useState<timeStepsData>({
     pastStepsCount: 0,
-    stepsArray: [],
+    stepsCount: 0,
   });
 
   const contextValues: mainContextInterface = {

@@ -8,15 +8,14 @@ const TimeStepsMenu = ({ state }: { state: number }) => {
   const [steps, setSteps] = useState<Array<JSX.Element>>([]);
 
   useEffect(() => {
-    console.log(stepsData);
     const timeSteps: Array<JSX.Element> = [];
 
-    for (let i = 0; i < stepsData.stepsArray.length; i++) {
+    for (let i = 1; i <= stepsData.stepsCount; i++) {
       timeSteps.push(
         <TimeStepBlock
           key={i}
           stepState={0}
-          stepType={stepsData.stepsArray[i]}
+          stepType={i % 2 != 0 ? "work" : (i / 2) % 4 == 0 ? "long" : "short"}
           isNew={i + 1 > stepsData.pastStepsCount}
         />
       );

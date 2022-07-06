@@ -9,20 +9,9 @@ const LoopInput = () => {
 
   //* Updating the steps data if the loop count changes
   useEffect(() => {
-    let steps: Array<timeStep> = [];
-
-    for (let i = 1; i <= loopCount; i++) {
-      steps.push("work");
-      if (i % 4 == 0) {
-        steps.push("long");
-      } else {
-        steps.push("short");
-      }
-    }
-
     setStepsData({
       pastStepsCount: pastLoopCount * 2,
-      stepsArray: steps,
+      stepsCount: loopCount * 2,
     });
     setPastLoopCount(loopCount);
   }, [loopCount]);

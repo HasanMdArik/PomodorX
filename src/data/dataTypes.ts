@@ -2,7 +2,7 @@ type timeStep = "work" | "long" | "short";
 
 type timeStepsData = {
   pastStepsCount: number;
-  stepsArray: Array<timeStep>;
+  stepsCount: number;
 };
 
 interface mainContextInterface {
