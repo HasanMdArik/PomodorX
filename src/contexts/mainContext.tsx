@@ -8,12 +8,17 @@ export const useMainContext = () => {
 };
 
 const MainContextProvider = ({ children }: { children: ReactNode }) => {
+  const [runningStep, setRunningStep] = useState(0);
+
   const [stepsData, setStepsData] = useState<timeStepsData>({
     pastStepsCount: 0,
     stepsCount: 0,
   });
+  // Initial data processing to be done here from the saved data at localstorage
 
   const contextValues: mainContextInterface = {
+    runningStep,
+    setRunningStep,
     stepsData,
     setStepsData,
   };
