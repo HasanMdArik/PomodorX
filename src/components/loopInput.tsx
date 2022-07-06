@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useMainContext } from "../contexts/mainContext";
-import { timeStepsData, timeStep } from "../data/dataTypes";
 
 const LoopInput = ({
   setState,
