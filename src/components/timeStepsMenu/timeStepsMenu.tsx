@@ -1,13 +1,27 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useMainContext } from "../../contexts/mainContext";
 import { primaryColors, stateNames } from "../../data/data";
 import TimeStepBlock from "./timeStepBlock";
 
 const TimeStepsMenu = ({ state }: { state: number }) => {
   const { stepsData } = useMainContext();
+  const [steps, setSteps] = useState<Array<JSX.Element>>([]);
 
   useEffect(() => {
     console.log(stepsData);
+    const timeSteps: Array<JSX.Element> = [];
+
+    for (let i = 0; i < stepsData.stepsArray.length; i++) {
+      timeSteps.push(
+        <TimeStepBlock
+          key={i}
+          stepState={0}
+          stepType={stepsData.stepsArray[i]}
+          isNew={i + 1 > stepsData.pastStepsCount}
+        />
+      );
+    }
+    setSteps(timeSteps);
   }, [stepsData]);
 
   useLayoutEffect(() => {
@@ -36,22 +50,7 @@ const TimeStepsMenu = ({ state }: { state: number }) => {
         className={"mt-8 font-medium " + stateNames[state]}
       >
         <ul id="time-step-list" className="text-3xl list-disc list-inside">
-          <TimeStepBlock stepState={2} stepType="work" />
-          <TimeStepBlock stepState={1} stepType="short" timePassed={150} />
-          <TimeStepBlock stepState={0} stepType="work" />
-          <TimeStepBlock stepState={0} stepType="short" />
-          {/* <div className="time active work-time">
-            <div>
-              <li>
-                <p>25-min work</p>
-              </li>
-            </div>
-            <div className="progress">
-              <li>
-                <p>25-min work</p>
-              </li>
-            </div>
-          </div> */}
+          {steps}
         </ul>
       </div>
     </div>

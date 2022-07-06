@@ -25,10 +25,12 @@ const TimeStepBlock = ({
   stepState,
   stepType,
   timePassed = 0,
+  isNew = false,
 }: {
   stepState: 0 | 1 | 2;
   stepType: timeStep;
   timePassed?: number;
+  isNew?: boolean;
 }) => {
   return (
     <div
@@ -37,7 +39,11 @@ const TimeStepBlock = ({
           "--time": (timeOfTypes[stepType] - timePassed).toString() + "s",
         } as any
       }
-      className={"time " + stepType + "-time" + stateClassName[stepState]}
+      className={
+        "time" +
+        stateClassName[stepState] +
+        (isNew ? " " + stepType + " new" : "")
+      }
     >
       <div>
         <li>

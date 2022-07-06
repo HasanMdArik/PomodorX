@@ -60,14 +60,6 @@ body {
 }
 
 /*** The time block styles ***/
-/* The block holder */
-.time {
-  width: 300px;
-  margin: 0.25rem 0rem;
-  position: relative;
-}
-/* time block's text */
-
 /*? For Reference ?*/
 /*<div className="time active work-time">
     <div>
@@ -88,6 +80,9 @@ body {
   width: 300px;
   border-radius: 0.5rem;
   overflow: hidden;
+  margin: 0.4rem 0rem;
+  position: relative;
+  user-select: none;
 }
 
 .time p {
@@ -150,6 +145,43 @@ body {
   border: 6px solid transparent;
   background-clip: content-box;
   background-color: var(--primary-color);
+}
+
+/*** The styles for new-steps coming in ***/
+.time.new.work {
+  animation: newWorkBlock 0.5s ease-out 0s 1 forwards;
+}
+
+.time.new.short,
+.time.new.long {
+  animation: newBreakBlock 0.5s ease-out 0s 1 forwards;
+}
+
+@keyframes newWorkBlock {
+  0% {
+    transform: translateY(300px);
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes newBreakBlock {
+  0%,
+  20% {
+    transform: translateY(300px);
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 /*** The styles of loop-input ***/
