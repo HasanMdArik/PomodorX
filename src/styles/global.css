@@ -247,6 +247,9 @@ input[type="number"] {
   margin-top: 1px;
 }
 /*** The styles for start button ***/
+#startButton:hover {
+  background-color: rgba(61, 252, 102, 0.5);
+}
 #startButton:disabled {
   opacity: 0.7;
 }
