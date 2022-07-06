@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
+import Countdown from "../components/countdown";
 import LoopInput from "../components/loopInput";
 import TimeStepsMenu from "../components/timeStepsMenu/timeStepsMenu";
 import MainContextProvider from "../contexts/mainContext";
@@ -55,9 +56,7 @@ const IndexPage = () => {
           </div>
 
           <div className="flex w-full h-screen justify-center items-center">
-            <div>
-              <LoopInput setState={setState} />
-            </div>
+            {state === 0 ? <LoopInput setState={setState} /> : <Countdown />}
           </div>
         </MainContextProvider>
       </main>
