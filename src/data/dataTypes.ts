@@ -1,7 +1,7 @@
 type timeStep = "work" | "long" | "short";
 
 type timeStepsData = {
-  pastLoopCount: number;
+  pastStepsCount: number;
   stepsArray: Array<timeStep>;
 };
 
