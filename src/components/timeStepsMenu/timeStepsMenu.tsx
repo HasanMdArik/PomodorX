@@ -4,24 +4,24 @@ import { primaryColors, stateNames } from "../../data/data";
 import TimeStepBlock from "./timeStepBlock";
 
 const TimeStepsMenu = ({ state }: { state: number }) => {
-  const { stepsData } = useMainContext();
+  const { loopData } = useMainContext();
   const [steps, setSteps] = useState<Array<JSX.Element>>([]);
 
   useEffect(() => {
     const timeSteps: Array<JSX.Element> = [];
 
-    for (let i = 1; i <= stepsData.stepsCount; i++) {
+    for (let i = 1; i <= loopData.loopCount * 2; i++) {
       timeSteps.push(
         <TimeStepBlock
           key={i}
           stepState={0}
           stepType={i % 2 != 0 ? "work" : (i / 2) % 4 == 0 ? "long" : "short"}
-          isNew={i + 1 > stepsData.pastStepsCount}
+          isNew={i > loopData.pastLoopCount * 2} //? steps are twice than loops
         />
       );
     }
     setSteps(timeSteps);
-  }, [stepsData]);
+  }, [loopData]);
 
   useLayoutEffect(() => {
     let viewPortHeight = window.innerHeight;

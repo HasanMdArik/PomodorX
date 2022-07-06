@@ -1,16 +1,16 @@
 type timeStep = "work" | "long" | "short";
 
-type timeStepsData = {
-  pastStepsCount: number;
-  stepsCount: number;
+type loopData = {
+  pastLoopCount: number;
+  loopCount: number;
 };
 
 interface mainContextInterface {
-  runningStep: number;
-  setRunningStep: React.Dispatch<React.SetStateAction<number>>;
-  stepsData: timeStepsData;
-  setStepsData: React.Dispatch<React.SetStateAction<timeStepsData>>;
+  runningTimeStepStartingTime: number;
+  runningTimeStep: number;
+  loopData: loopData;
+  setLoopData: React.Dispatch<React.SetStateAction<loopData>>;
   cancelTimer: Function;
 }
 
-export { timeStep, timeStepsData, mainContextInterface };
+export { timeStep, loopData, mainContextInterface };

@@ -8,13 +8,13 @@ const LoopInput = ({
 }) => {
   const [pastLoopCount, setPastLoopCount] = useState(0);
   const [loopCount, setLoopCount] = useState(0);
-  const { setStepsData } = useMainContext();
+  const { setLoopData: setStepsData } = useMainContext();
 
   //* Updating the steps data if the loop count changes
   useEffect(() => {
     setStepsData({
-      pastStepsCount: pastLoopCount * 2,
-      stepsCount: loopCount * 2,
+      pastLoopCount: pastLoopCount,
+      loopCount: loopCount,
     });
     setPastLoopCount(loopCount);
   }, [loopCount]);
