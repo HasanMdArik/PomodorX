@@ -34,7 +34,7 @@ const IndexPage = () => {
 
       <main id="main" className={"flex " + stateNames[state]}>
         {/* The main context carries the time-step menu's data */}
-        <MainContextProvider>
+        <MainContextProvider setState={setState}>
           <div className="h-screen">
             <div className="relative mb-20">
               <svg width="400" viewBox="0 0 561 193" fill="none">

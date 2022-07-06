@@ -10,6 +10,7 @@ interface mainContextInterface {
   setRunningStep: React.Dispatch<React.SetStateAction<number>>;
   stepsData: timeStepsData;
   setStepsData: React.Dispatch<React.SetStateAction<timeStepsData>>;
+  cancelTimer: Function;
 }
 
 export { timeStep, timeStepsData, mainContextInterface };

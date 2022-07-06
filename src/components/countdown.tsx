@@ -11,7 +11,7 @@ const footNote = [
 ];
 
 const Countdown = () => {
-  const { runningStep } = useMainContext();
+  const { runningStep, cancelTimer } = useMainContext();
   const [isPaused, setIsPaused] = useState(false);
   const stepIndex =
     (runningStep + 1) % 2 != 0 ? 0 : (runningStep + 1) % 4 == 0 ? 2 : 1;
@@ -30,8 +30,11 @@ const Countdown = () => {
         >
           {isPaused ? "Resume" : "Pause"}
         </button>
-        <button className="primary-bg primary-color primary-border rounded-[1.25rem] text-3xl py-1.5 px-8 mx-3">
-          Stop
+        <button
+          onClick={() => cancelTimer()}
+          className="primary-bg primary-color primary-border rounded-[1.25rem] text-3xl py-1.5 px-8 mx-3"
+        >
+          Cancel
         </button>
       </div>
     </div>
