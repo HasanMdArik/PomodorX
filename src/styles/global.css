@@ -45,6 +45,10 @@ body {
 .primary-color {
   color: var(--primary-color);
 }
+.secondary-color {
+  /* Use the primary bg's color as secondary color */
+  color: var(--primary-bg);
+}
 .main-border {
   border: 4px solid var(--main-color);
 }
