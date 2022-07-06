@@ -14,21 +14,47 @@ const stepContents: { [key: string]: string } = {
   long: "30-min break",
 };
 
-const TimeStepBlocks = ({
+// The time period(seconds) depending on types
+const timeOfTypes: { [key: string]: number } = {
+  work: 1500,
+  short: 300,
+  long: 1800,
+};
+
+const TimeStepBlock = ({
   stepState,
   stepType,
+  timePassed = 0,
 }: {
   stepState: 0 | 1 | 2;
   stepType: timeStep;
+  timePassed?: number;
 }) => {
   return (
-    <div className={"time " + stepType + "-time" + stateClassName[stepState]}>
+    <div
+      style={
+        {
+          "--time": (timeOfTypes[stepType] - timePassed).toString() + "s",
+        } as any
+      }
+      className={"time " + stepType + "-time" + stateClassName[stepState]}
+    >
       <div>
         <li>
           <p>{stepContents[stepType]}</p>
         </li>
       </div>
-      <div className="progress">
+      <div
+        style={
+          stepState == 1
+            ? {
+                width:
+                  ((timePassed * 100) / timeOfTypes[stepType]).toString() + "%",
+              }
+            : {}
+        }
+        className="progress"
+      >
         <li>
           <p>{stepContents[stepType]}</p>
         </li>
@@ -37,4 +63,4 @@ const TimeStepBlocks = ({
   );
 };
 
-export default TimeStepBlocks;
+export default TimeStepBlock;
