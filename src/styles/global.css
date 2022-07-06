@@ -246,3 +246,7 @@ input[type="number"] {
   border-top: 15px solid var(--main-color);
   margin-top: 1px;
 }
+/*** The styles for start button ***/
+#startButton:disabled {
+  opacity: 0.7;
+}

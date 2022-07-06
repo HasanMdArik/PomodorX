@@ -56,7 +56,7 @@ const IndexPage = () => {
 
           <div className="flex w-full h-screen justify-center items-center">
             <div>
-              <LoopInput />
+              <LoopInput setState={setState} />
             </div>
           </div>
         </MainContextProvider>

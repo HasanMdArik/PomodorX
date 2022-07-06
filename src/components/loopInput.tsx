@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useMainContext } from "../contexts/mainContext";
 import { timeStepsData, timeStep } from "../data/dataTypes";
 
-const LoopInput = () => {
+const LoopInput = ({
+  setState,
+}: {
+  setState: React.Dispatch<React.SetStateAction<number>>;
+}) => {
   const [pastLoopCount, setPastLoopCount] = useState(0);
   const [loopCount, setLoopCount] = useState(0);
   const { setStepsData } = useMainContext();
@@ -62,7 +66,11 @@ const LoopInput = () => {
       <div className="flex justify-center mt-3">
         <button
           className="primary-bg main-border rounded-[1.25rem] text-3xl py-1.5 px-10"
-          id="submitButton"
+          id="startButton"
+          disabled={loopCount <= 0}
+          onClick={() => {
+            setState(1);
+          }}
         >
           Start
         </button>
