@@ -1,7 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useMainContext } from "../contexts/mainContext";
+import { timeStepsData, timeStep } from "../data/dataTypes";
 
 const LoopInput = () => {
-  const [loopCount, setLoopCount] = useState(1);
+  const [pastLoopCount, setPastLoopCount] = useState(0);
+  const [loopCount, setLoopCount] = useState(0);
+  const { setStepsData } = useMainContext();
+
+  //* Updating the steps data if the loop count changes
+  useEffect(() => {
+    let steps: Array<timeStep> = [];
+
+    for (let i = 1; i <= loopCount; i++) {
+      steps.push("work");
+      if (i % 4 == 0) {
+        steps.push("long");
+      } else {
+        steps.push("short");
+      }
+    }
+
+    setStepsData({
+      pastStepsCount: pastLoopCount * 2,
+      stepsArray: steps,
+    });
+    setPastLoopCount(loopCount);
+  }, [loopCount]);
 
   return (
     <div>
@@ -12,7 +36,7 @@ const LoopInput = () => {
         <div className="relative flex items-center">
           <input
             value={loopCount}
-            min={1}
+            min={0}
             onChange={(e) => {
               setLoopCount(
                 parseInt(e.target.value) ? parseInt(e.target.value) : 0
@@ -34,7 +58,7 @@ const LoopInput = () => {
               <div className="arr" />
             </button>
             <button
-              disabled={loopCount <= 1}
+              disabled={loopCount <= 0}
               onClick={() => {
                 setLoopCount(loopCount - 1);
               }}
