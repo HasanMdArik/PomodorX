@@ -3,13 +3,13 @@ import Countdown from "../components/countdown";
 import LoopInput from "../components/loopInput";
 import TimeStepsMenu from "../components/timeStepsMenu/timeStepsMenu";
 import { useMainContext } from "../contexts/mainContext";
-import { componentBackgrounds, stateNames } from "../data/data";
+import { componentBackgrounds, stateBasedClassName } from "../data/data";
 
 const App = () => {
   const { state } = useMainContext();
 
   return (
-    <main id="main" className={"flex " + stateNames[state]}>
+    <main id="main" className={"flex " + stateBasedClassName[state]}>
       <div className="h-screen">
         <div className="relative mb-20">
           <svg width="400" viewBox="0 0 561 193" fill="none">
