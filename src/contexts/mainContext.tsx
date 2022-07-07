@@ -146,8 +146,10 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
     let newTimeSteps = [...timeSteps];
     newTimeSteps[newRunningStep].startingTime = Math.floor(Date.now() / 1000);
 
-    // 4. Stop the alarm
-    stopAlarm();
+    // 4. Stop the alarm if not the initial start
+    if (runningStep >= 0) {
+      stopAlarm();
+    }
 
     // 5. Update the states
     setRunningStep(newRunningStep);
