@@ -34,9 +34,6 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //? The variable that tells the countdown if timer is paused or not
   const [isPaused, setIsPaused] = useState(false);
 
-  //? The internal variable to store timeout data for cancelling it
-  const [timeoutData, setTimeoutData] = useState<NodeJS.Timeout>();
-
   //* The UseEffect Functions to look for updates
   //? The useEffect funtion to create timeSteps from loopCount
   useEffect(() => {
@@ -66,28 +63,25 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
       setState(0);
     } else {
       // 1. calculate the new state
-      // Need to add one with the runningStep for calculations, because it is an index
+      //! Need to add one with the runningStep for calculations, because it is an index
       const newState =
         (runningStep + 1) % 2 != 0 ? 1 : (runningStep + 1) % 8 != 0 ? 2 : 3;
-      // 2. Derive time of the new step from state-number
-      const stepTime = timePeriods[newState - 1];
-      // 3. Start the setTimeout function for for firing the startAlarm function
-      let newTimeoutData = setTimeout(() => {
-        startAlarm();
-      }, stepTime * 1000); // stepTime is in seconds and setTimeout requires millisecond value
-      // 4. Update the states
-      setTimeoutData(newTimeoutData);
+      // 2. Update the states
       setState(newState);
     }
   }, [runningStep]);
 
   //* Private functions
+  const stopAlarm = () => {
+    console.log("Alarm stopped");
+  };
+
+  //* The other functions
+  //? The function to start the alarm
   const startAlarm = () => {
     console.log("Current time step ended");
     // Start the alarm
   };
-
-  //* The other functions
   //? The function to cancel the timer
   const cancelTimer = () => {
     // Turn all states to default(except the state as that is handled by a useEffect func)
@@ -97,26 +91,18 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
     });
     setRunningStep(-1);
     setTimeSteps([]);
-    setTimeoutData(undefined);
   };
 
   //? The function to pause the timer
   const pauseTimer = () => {
-    // 1. Cancel the timer
-    clearTimeout(timeoutData);
-    // 2. change the step's data so that it works fine after resuming
+    // 1. change the step's data so that it works fine after resuming
     let newTimeSteps = [...timeSteps]; // Can't directly reference cause arrays are referenced by address
     let passedTime =
       Math.floor(Date.now() / 1000) - newTimeSteps[runningStep].startingTime;
-    console.log(
-      Math.floor(Date.now() / 1000),
-      newTimeSteps[runningStep].startingTime,
-      passedTime
-    );
     newTimeSteps[runningStep].timePassedBeforePause = passedTime;
     newTimeSteps[runningStep].startingTime = -2; // -2 is a special value that indicates the step is paused
 
-    // 3. set isPaused to true and set timeSteps to new value
+    // 2. set isPaused to true and set timeSteps to new value
     setIsPaused(true);
     setTimeSteps(newTimeSteps);
   };
@@ -125,27 +111,19 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   const resumeTimer = () => {
     // 1. get data about the step
     let timeStep = timeSteps[runningStep];
-    let timeLeft =
-      timeStep.stepTime - (timeStep.timePassedBeforePause as number); // we can surely tell that it's not undefined
-    console.log(timeLeft);
+
     // 2. update the startingTime of the running step
     //? We have to subsract timePassedBeforePause with the current time.
     //? So that, the percentage of the time step menu remains correct
     const newTimeSteps = [...timeSteps];
     newTimeSteps[runningStep].startingTime =
       Math.floor(Date.now() / 1000) -
-      (timeStep.timePassedBeforePause as number); // again, we can surely tell that it's not undefined
+      (timeStep.timePassedBeforePause as number); // we can surely tell that it's not undefined
     newTimeSteps[runningStep].timePassedBeforePause = undefined;
 
-    // 3. restart the setTimeout func
-    let newTimeoutData = setTimeout(() => {
-      startAlarm();
-    }, timeLeft * 1000); // timeLeft is in seconds and setTimeout requires millisecond value
-
-    // 4. Update the states and set isPaused to false
+    // 3. Update the states and set isPaused to false
     setIsPaused(false);
     setTimeSteps(newTimeSteps);
-    setTimeoutData(newTimeoutData);
   };
 
   //? The function to start the next step from the steps
@@ -162,11 +140,15 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
     // If time steps left to be done,
     // 1. update runningStep
     let newRunningStep = runningStep + 1;
+
     // 2. update the new step with data
     let newTimeSteps = [...timeSteps];
     newTimeSteps[newRunningStep].startingTime = Math.floor(Date.now() / 1000);
 
-    // 3. Update the states
+    // 3. Stop the alarm
+    stopAlarm();
+
+    // 4. Update the states
     setRunningStep(newRunningStep);
     setTimeSteps(newTimeSteps);
   };
@@ -178,6 +160,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
     state,
     timeSteps,
     setLoopData,
+    startAlarm,
     cancelTimer,
     pauseTimer,
     resumeTimer,
