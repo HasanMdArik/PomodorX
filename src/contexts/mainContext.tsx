@@ -53,6 +53,32 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
     setTimeSteps(newTimeSteps);
   }, [loopData]);
 
+  //? The useEffect function to update state with new runningSteps
+  //? It also fires the alarm function
+  useEffect(() => {
+    if (runningStep == -1) {
+      setState(0);
+    } else {
+      // 1. calculate the new state
+      // Need to add one with the runningStep for calculations, because it is an index
+      const newState =
+        (runningStep + 1) % 2 != 0 ? 1 : (runningStep + 1) % 8 != 0 ? 2 : 3;
+      // 2. Derive time of the new step from state-number
+      const stepTime = timePeriods[newState - 1];
+      // 3. Start the setTimeout function for for firing the startAlarm function
+      setTimeout(() => {
+        startAlarm();
+      }, stepTime * 1000); // stepTime is in seconds and setTimeout requires millisecond value
+      setState(newState);
+    }
+  }, [runningStep]);
+
+  //* Private functions
+  const startAlarm = () => {
+    console.log("Current time step ended");
+    // Start the alarm
+  };
+
   //* The other functions
   //? The function to cancel the timer
   const cancelTimer = () => {};
@@ -64,7 +90,27 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   const resumeTimer = () => {};
 
   //? The function to start the next step from the steps
-  const startNextStep = () => {};
+  //? it also updates the steps with required data
+  const startNextStep = () => {
+    // Check if all time steps are finished
+    if (runningStep + 1 == timeSteps.length) {
+      // if finished return to default screen
+      setState(0);
+      setTimeSteps([]);
+      setRunningStep(-1);
+      return;
+    }
+    // If time steps left to be done,
+    // 1. update runningStep
+    let newRunningStep = runningStep + 1;
+    // 2. update the new step with data
+    let newTimeSteps = [...timeSteps];
+    newTimeSteps[newRunningStep].startingTime = Date.now();
+
+    // 3. Update the states
+    setRunningStep(newRunningStep);
+    setTimeSteps(newTimeSteps);
+  };
 
   const contextValues: mainContextInterface = {
     loopData,
