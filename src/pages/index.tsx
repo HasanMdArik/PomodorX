@@ -2,21 +2,10 @@ import * as React from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import App from "../App/App";
-import Countdown from "../components/countdown";
-import LoopInput from "../components/loopInput";
-import TimeStepsMenu from "../components/timeStepsMenu/timeStepsMenu";
 import MainContextProvider from "../contexts/mainContext";
-import { componentBackgrounds, stateNames } from "../data/data";
 import "../styles/global.css";
 
-// markup
 const IndexPage = () => {
-  // 0 stands for timer not started
-  // 1 stands for work time
-  // 2 stands for short break
-  // 3 stands for long break
-  const [state, setState] = useState(0);
-
   return (
     <React.Fragment>
       <Helmet>
