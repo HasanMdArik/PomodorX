@@ -1,8 +1,10 @@
 import React, { ReactNode, useContext, useEffect, useState } from "react";
+import { timePeriods } from "../data/data";
 import {
   mainContextInterface,
   loopData,
   timeStepData,
+  timeStepTypes,
 } from "../data/dataTypes";
 
 const MainContext = React.createContext({} as mainContextInterface);
@@ -30,6 +32,27 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   const [timeSteps, setTimeSteps] = useState<Array<timeStepData>>([]);
 
   //* The UseEffect Functions to look for updates
+  //? The useEffect funtion to create timeSteps from loopCount
+  useEffect(() => {
+    const newTimeSteps: Array<timeStepData> = [];
+    let stepsCount = loopData.loopCount * 2; // each loop contains one work step and another break step
+    for (let i = 1; i <= stepsCount; i++) {
+      let type: timeStepTypes =
+        i % 2 != 0
+          ? timeStepTypes.work
+          : i % 8 != 0
+          ? timeStepTypes.short
+          : timeStepTypes.long;
+      let stepTime = timePeriods[type];
+      newTimeSteps.push({
+        startingTime: -1,
+        stepTime,
+        type,
+      });
+    }
+    console.log(newTimeSteps);
+    setTimeSteps(newTimeSteps);
+  }, [loopData]);
 
   //* The other functions
   //? The function to cancel the timer
