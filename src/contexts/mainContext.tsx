@@ -31,6 +31,9 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //? The timeSteps state will be used by timeStepMenu.tsx and countdown.tsx
   const [timeSteps, setTimeSteps] = useState<Array<timeStepData>>([]);
 
+  //? The variable that tells the countdown if timer is paused or not
+  const [isPaused, setIsPaused] = useState(false);
+
   //? The internal variable to store timeout data for cancelling it
   const [timeoutData, setTimeoutData] = useState<NodeJS.Timeout>();
 
@@ -98,7 +101,20 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   //? The function to pause the timer
-  const pauseTimer = () => {};
+  const pauseTimer = () => {
+    // 1. Cancel the timer
+    clearTimeout(timeoutData);
+    // 2. change the step's data so that it works fine after resuming
+    let newTimeSteps = [...timeSteps]; // Can't directly reference cause arrays are referenced by address
+    let passedTime = Date.now() - newTimeSteps[runningStep].startingTime;
+    newTimeSteps[runningStep].stepTime =
+      newTimeSteps[runningStep].stepTime - passedTime;
+    newTimeSteps[runningStep].startingTime = -1;
+
+    // 3. set isPaused to true and set timeSteps to new value
+    setIsPaused(true);
+    setTimeSteps(newTimeSteps);
+  };
 
   //? The function to resume the timer
   const resumeTimer = () => {};
@@ -129,6 +145,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   const contextValues: mainContextInterface = {
     loopData,
     runningStep,
+    isPaused,
     state,
     timeSteps,
     setLoopData,
