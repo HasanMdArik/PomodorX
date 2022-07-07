@@ -31,6 +31,9 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //? The timeSteps state will be used by timeStepMenu.tsx and countdown.tsx
   const [timeSteps, setTimeSteps] = useState<Array<timeStepData>>([]);
 
+  //? The internal variable to store timeout data for cancelling it
+  const [timeoutData, setTimeoutData] = useState<NodeJS.Timeout>();
+
   //* The UseEffect Functions to look for updates
   //? The useEffect funtion to create timeSteps from loopCount
   useEffect(() => {
@@ -56,7 +59,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //? The useEffect function to update state with new runningSteps
   //? It also fires the alarm function
   useEffect(() => {
-    if (runningStep == -1) {
+    if (runningStep != -1) {
       setState(0);
     } else {
       // 1. calculate the new state
@@ -66,9 +69,11 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
       // 2. Derive time of the new step from state-number
       const stepTime = timePeriods[newState - 1];
       // 3. Start the setTimeout function for for firing the startAlarm function
-      setTimeout(() => {
+      let newTimeoutData = setTimeout(() => {
         startAlarm();
       }, stepTime * 1000); // stepTime is in seconds and setTimeout requires millisecond value
+      // 4. Update the states
+      setTimeoutData(newTimeoutData);
       setState(newState);
     }
   }, [runningStep]);
@@ -81,7 +86,16 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
 
   //* The other functions
   //? The function to cancel the timer
-  const cancelTimer = () => {};
+  const cancelTimer = () => {
+    // Turn all states to default(except the state as that is handled by a useEffect func)
+    setLoopData({
+      loopCount: 0,
+      pastLoopCount: 0,
+    });
+    setRunningStep(-1);
+    setTimeSteps([]);
+    setTimeoutData(undefined);
+  };
 
   //? The function to pause the timer
   const pauseTimer = () => {};
