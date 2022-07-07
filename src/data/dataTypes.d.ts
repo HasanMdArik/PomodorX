@@ -27,7 +27,7 @@ type timeStepData = {
 interface mainContextInterface {
   loopData: loopData;
   runningStep: number;
-  steps: Array<timeStepData>;
+  timeSteps: Array<timeStepData>;
   setLoopData: React.Dispatch<React.SetStateAction<loopData>>;
   cancelTimer: Function;
   pauseTimer: Function;
