@@ -50,7 +50,6 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
         type,
       });
     }
-    console.log(newTimeSteps);
     setTimeSteps(newTimeSteps);
   }, [loopData]);
 

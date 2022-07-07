@@ -34,7 +34,6 @@ const TimeStepsMenu = ({ state }: { state: number }) => {
       );
     });
 
-    console.log(timeSteps, newSteps);
     setSteps(newSteps);
   }, [timeSteps]);
 
