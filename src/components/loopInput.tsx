@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useMainContext } from "../contexts/mainContext";
 
-const LoopInput = ({
-  setState,
-}: {
-  setState: React.Dispatch<React.SetStateAction<number>>;
-}) => {
+const LoopInput = () => {
   const [pastLoopCount, setPastLoopCount] = useState(0);
   const [loopCount, setLoopCount] = useState(0);
-  const { setLoopData: setStepsData } = useMainContext();
+  const { setLoopData, startNextStep } = useMainContext();
 
   //* Updating the steps data if the loop count changes
   useEffect(() => {
-    setStepsData({
+    setLoopData({
       pastLoopCount: pastLoopCount,
       loopCount: loopCount,
     });
@@ -68,7 +64,7 @@ const LoopInput = ({
           id="startButton"
           disabled={loopCount <= 0}
           onClick={() => {
-            setState(1);
+            startNextStep();
           }}
         >
           Start
