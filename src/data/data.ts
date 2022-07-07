@@ -18,3 +18,6 @@ export const timePeriods = [1500, 300, 1800];
 // if the index is 1, it means active
 // if the index is 2, it means finished
 export const timeStepStateClassNames = ["", " active", " finished"];
+
+// step-type className(string) depending on the timeStepTypes enum
+export const stepTypeClassNames = ["work", "short", "long"];
