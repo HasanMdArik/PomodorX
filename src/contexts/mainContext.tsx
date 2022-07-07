@@ -135,7 +135,8 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
       startAlarm();
     }, timeLeft * 1000); // timeLeft is in seconds and setTimeout requires millisecond value
 
-    // 4. Update the states
+    // 4. Update the states and set isPaused to false
+    setIsPaused(false);
     setTimeSteps(newTimeSteps);
     setTimeoutData(newTimeoutData);
   };
