@@ -27,6 +27,7 @@ export type timeStepData = {
   type: timeStepTypes;
   stepTime: number;
   startingTime: number;
+  timePassedBeforePause?: number;
 };
 
 // The interface for main-context
