@@ -14,7 +14,7 @@ const TimeStepsMenu = ({ state }: { state: number }) => {
       let timePassed = 0;
       let stepState: timeStepStateTypes = timeStepStateTypes.pending;
       if (timeStep.startingTime != -1) {
-        let timeNow = Date.now();
+        let timeNow = Math.floor(Date.now() / 1000);
         timePassed = timeNow - timeStep.startingTime;
         // Setting the time step depending on timePassed vs step's time
         if (timePassed >= timeStep.stepTime) {

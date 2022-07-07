@@ -106,7 +106,13 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
     clearTimeout(timeoutData);
     // 2. change the step's data so that it works fine after resuming
     let newTimeSteps = [...timeSteps]; // Can't directly reference cause arrays are referenced by address
-    let passedTime = Date.now() - newTimeSteps[runningStep].startingTime;
+    let passedTime =
+      Math.floor(Date.now() / 1000) - newTimeSteps[runningStep].startingTime;
+    console.log(
+      Math.floor(Date.now() / 1000),
+      newTimeSteps[runningStep].startingTime,
+      passedTime
+    );
     newTimeSteps[runningStep].timePassedBeforePause = passedTime;
     newTimeSteps[runningStep].startingTime = -2; // -2 is a special value that indicates the step is paused
 
@@ -121,13 +127,14 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
     let timeStep = timeSteps[runningStep];
     let timeLeft =
       timeStep.stepTime - (timeStep.timePassedBeforePause as number); // we can surely tell that it's not undefined
-
+    console.log(timeLeft);
     // 2. update the startingTime of the running step
     //? We have to subsract timePassedBeforePause with the current time.
     //? So that, the percentage of the time step menu remains correct
     const newTimeSteps = [...timeSteps];
     newTimeSteps[runningStep].startingTime =
-      Date.now() - (timeStep.timePassedBeforePause as number); // again, we can surely tell that it's not undefined
+      Math.floor(Date.now() / 1000) -
+      (timeStep.timePassedBeforePause as number); // again, we can surely tell that it's not undefined
     newTimeSteps[runningStep].timePassedBeforePause = undefined;
 
     // 3. restart the setTimeout func
@@ -157,7 +164,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
     let newRunningStep = runningStep + 1;
     // 2. update the new step with data
     let newTimeSteps = [...timeSteps];
-    newTimeSteps[newRunningStep].startingTime = Date.now();
+    newTimeSteps[newRunningStep].startingTime = Math.floor(Date.now() / 1000);
 
     // 3. Update the states
     setRunningStep(newRunningStep);
