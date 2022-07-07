@@ -1,5 +1,6 @@
 import React from "react";
-import { timeStep } from "../../data/dataTypes";
+import { timePeriods } from "../../data/data";
+import { timeStepTypes } from "../../data/dataTypes";
 
 // classNames depending on the stepState value
 // if stepState is 0, it means nor active nor finished (means pending)
@@ -14,13 +15,6 @@ const stepContents: { [key: string]: string } = {
   long: "30-min break",
 };
 
-// The time period(seconds) depending on types
-const timeOfTypes: { [key: string]: number } = {
-  work: 1500,
-  short: 300,
-  long: 1800,
-};
-
 const TimeStepBlock = ({
   stepState,
   stepType,
@@ -28,7 +22,7 @@ const TimeStepBlock = ({
   isNew = false,
 }: {
   stepState: 0 | 1 | 2;
-  stepType: timeStep;
+  stepType: timeStepTypes;
   timePassed?: number;
   isNew?: boolean;
 }) => {
@@ -36,7 +30,7 @@ const TimeStepBlock = ({
     <div
       style={
         {
-          "--time": (timeOfTypes[stepType] - timePassed).toString() + "s",
+          "--time": (timePeriods[stepType] - timePassed).toString() + "s",
         } as any
       }
       className={
@@ -55,7 +49,7 @@ const TimeStepBlock = ({
           stepState == 1
             ? {
                 width:
-                  ((timePassed * 100) / timeOfTypes[stepType]).toString() + "%",
+                  ((timePassed * 100) / timePeriods[stepType]).toString() + "%",
               }
             : {}
         }
