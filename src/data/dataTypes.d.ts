@@ -25,6 +25,7 @@ type timeStepData = {
 // The interface for main-context
 // interface mainContextInterface
 interface mainContextInterface {
+  state: number;
   loopData: loopData;
   runningStep: number;
   timeSteps: Array<timeStepData>;
