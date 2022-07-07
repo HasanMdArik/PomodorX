@@ -1,6 +1,10 @@
 import React from "react";
-import { timeStepStateClassNames, timePeriods } from "../../data/data";
-import { timeStepTypes } from "../../data/dataTypes";
+import {
+  timeStepStateClassNames,
+  timePeriods,
+  stateBasedClassName,
+} from "../../data/data";
+import { timeStepStateTypes, timeStepTypes } from "../../data/dataTypes";
 
 // The block's statements depending on types
 const stepContents: Array<string> = [
@@ -15,7 +19,7 @@ const TimeStepBlock = ({
   timePassed = 0,
   isNew = false,
 }: {
-  stepState: 0 | 1 | 2;
+  stepState: timeStepStateTypes;
   stepType: timeStepTypes;
   timePassed?: number;
   isNew?: boolean;
@@ -30,7 +34,7 @@ const TimeStepBlock = ({
       className={
         "time" +
         timeStepStateClassNames[stepState] +
-        (isNew ? " " + stepType + " new" : "")
+        (isNew ? " " + stateBasedClassName[stepType + 1] + " new" : "")
       }
     >
       <div>

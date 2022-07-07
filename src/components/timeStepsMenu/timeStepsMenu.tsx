@@ -1,27 +1,42 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useMainContext } from "../../contexts/mainContext";
-import { primaryColors, stateNames } from "../../data/data";
+import { primaryColors } from "../../data/data";
+import { timeStepStateTypes } from "../../data/dataTypes";
 import TimeStepBlock from "./timeStepBlock";
 
 const TimeStepsMenu = ({ state }: { state: number }) => {
-  const { loopData } = useMainContext();
+  const { timeSteps, loopData } = useMainContext();
   const [steps, setSteps] = useState<Array<JSX.Element>>([]);
 
   useEffect(() => {
-    const timeSteps: Array<JSX.Element> = [];
+    const newSteps: Array<JSX.Element> = [];
+    timeSteps.forEach((timeStep, index) => {
+      let timePassed = 0;
+      let stepState: timeStepStateTypes = timeStepStateTypes.pending;
+      if (timeStep.startingTime != -1) {
+        let timeNow = Date.now();
+        timePassed = timeNow - timeStep.startingTime;
+        // Setting the time step depending on timePassed vs step's time
+        if (timePassed >= timeStep.stepTime) {
+          stepState = timeStepStateTypes.finished;
+        } else {
+          stepState = timeStepStateTypes.active;
+        }
+      }
 
-    for (let i = 1; i <= loopData.loopCount * 2; i++) {
-      timeSteps.push(
+      newSteps.push(
         <TimeStepBlock
-          key={i}
-          stepState={0}
-          stepType={i % 2 != 0 ? "work" : (i / 2) % 4 == 0 ? "long" : "short"}
-          isNew={i > loopData.pastLoopCount * 2} //? steps are twice than loops
+          stepState={stepState}
+          stepType={timeStep.type}
+          isNew={index + 1 > loopData.pastLoopCount * 2}
+          key={index}
         />
       );
-    }
-    setSteps(timeSteps);
-  }, [loopData]);
+    });
+
+    console.log(timeSteps, newSteps);
+    setSteps(newSteps);
+  }, [timeSteps]);
 
   useLayoutEffect(() => {
     let viewPortHeight = window.innerHeight;
@@ -46,7 +61,7 @@ const TimeStepsMenu = ({ state }: { state: number }) => {
       <div
         id="time-step-list-container"
         data-color={"#1e7d33"}
-        className={"mt-8 font-medium " + stateNames[state]}
+        className={"mt-8 font-medium "}
       >
         <ul id="time-step-list" className="text-3xl list-disc list-inside">
           {steps}
