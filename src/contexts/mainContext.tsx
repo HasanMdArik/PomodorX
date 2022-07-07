@@ -107,9 +107,8 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
     // 2. change the step's data so that it works fine after resuming
     let newTimeSteps = [...timeSteps]; // Can't directly reference cause arrays are referenced by address
     let passedTime = Date.now() - newTimeSteps[runningStep].startingTime;
-    newTimeSteps[runningStep].stepTime =
-      newTimeSteps[runningStep].stepTime - passedTime;
-    newTimeSteps[runningStep].startingTime = -1;
+    newTimeSteps[runningStep].timePassedBeforePause = passedTime;
+    newTimeSteps[runningStep].startingTime = -2; // -2 is a special value that indicates the step is paused
 
     // 3. set isPaused to true and set timeSteps to new value
     setIsPaused(true);
@@ -117,7 +116,29 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   //? The function to resume the timer
-  const resumeTimer = () => {};
+  const resumeTimer = () => {
+    // 1. get data about the step
+    let timeStep = timeSteps[runningStep];
+    let timeLeft =
+      timeStep.stepTime - (timeStep.timePassedBeforePause as number); // we can surely tell that it's not undefined
+
+    // 2. update the startingTime of the running step
+    //? We have to subsract timePassedBeforePause with the current time.
+    //? So that, the percentage of the time step menu remains correct
+    const newTimeSteps = [...timeSteps];
+    newTimeSteps[runningStep].startingTime =
+      Date.now() - (timeStep.timePassedBeforePause as number); // again, we can surely tell that it's not undefined
+    newTimeSteps[runningStep].timePassedBeforePause = undefined;
+
+    // 3. restart the setTimeout func
+    let newTimeoutData = setTimeout(() => {
+      startAlarm();
+    }, timeLeft * 1000); // timeLeft is in seconds and setTimeout requires millisecond value
+
+    // 4. Update the states
+    setTimeSteps(newTimeSteps);
+    setTimeoutData(newTimeoutData);
+  };
 
   //? The function to start the next step from the steps
   //? it also updates the steps with required data
