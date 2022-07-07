@@ -39,6 +39,7 @@ export interface mainContextInterface {
   isPaused: boolean;
   timeSteps: Array<timeStepData>;
   setLoopData: React.Dispatch<React.SetStateAction<loopData>>;
+  startAlarm: Function;
   cancelTimer: Function;
   pauseTimer: Function;
   resumeTimer: Function;
