@@ -14,7 +14,7 @@ const MainContextProvider = ({
   children: ReactNode;
   setState: React.Dispatch<React.SetStateAction<number>>;
 }) => {
-  const [runningTimeStep, setRunningTimeStep] = useState(0);
+  const [runningTimeStep, setRunningTimeStep] = useState(1); //? It starts from 1 and not with 0 for avoid complexity
   const [runningTimeStepStartingTime, setRunningTimeStepStartingTime] =
     useState(-1); //? This value is used to pass the time of when current step started if the app reloads meanwhile
   const [loopData, setLoopData] = useState<loopData>({
@@ -22,10 +22,18 @@ const MainContextProvider = ({
     loopCount: 0,
   });
   // TODO Initial data processing to be done here from the saved data at localstorage
+  useEffect(() => {
+    // Retreiving data from localStorage
+    let storedRunningTimeStep = localStorage.getItem("runningTimeStep");
+    let storedRunningTimeStepStartingTime = localStorage.getItem(
+      "runningTimeStepStartingTime"
+    );
+    let storedLoopCount = localStorage.getItem("loopCount");
+  }, []);
 
   // Saves updates to tackle reloads
   useEffect(() => {
-    localStorage.setItem("runningStepTime", runningTimeStep.toString());
+    localStorage.setItem("runningTimeStep", runningTimeStep.toString());
     localStorage.setItem(
       "runningTimeStepStartingTime",
       runningTimeStepStartingTime.toString()
@@ -43,7 +51,10 @@ const MainContextProvider = ({
     setState(0);
   };
 
-  const startNextStep = () => {};
+  const startNextStep = () => {
+    if (runningTimeStep < loopData.loopCount * 2) {
+    }
+  };
 
   const contextValues: mainContextInterface = {
     runningTimeStepStartingTime,
