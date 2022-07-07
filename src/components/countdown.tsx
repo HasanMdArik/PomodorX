@@ -62,7 +62,6 @@ const Countdown = () => {
     }, 1000);
 
     return () => {
-      console.log("Hi");
       clearInterval(countDownUpdateInterval);
     };
   }, [runningStep, isPaused]);
