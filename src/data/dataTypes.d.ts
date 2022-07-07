@@ -31,6 +31,7 @@ interface mainContextInterface {
   setLoopData: React.Dispatch<React.SetStateAction<loopData>>;
   cancelTimer: Function;
   pauseTimer: Function;
+  resumeTimer: Function;
   startNextStep: Function;
 }
 
