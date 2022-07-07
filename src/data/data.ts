@@ -12,3 +12,9 @@ export const stateNames = ["idle", "work", "short", "long"];
 
 // Time period of different time step types
 export const timePeriods = [1500, 300, 1800];
+
+// classNames depending on the stepState value(to be used as it's index)
+// if the index is 0, it means nor active nor finished (means pending)
+// if the index is 1, it means active
+// if the index is 2, it means finished
+export const timeStepStateClassNames = ["", " active", " finished"];
