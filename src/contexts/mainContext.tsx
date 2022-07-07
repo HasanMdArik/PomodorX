@@ -82,6 +82,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
     console.log("Current time step ended");
     // Start the alarm
   };
+
   //? The function to cancel the timer
   const cancelTimer = () => {
     // Turn all states to default(except the state as that is handled by a useEffect func)
@@ -129,7 +130,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //? The function to start the next step from the steps
   //? it also updates the steps with required data
   const startNextStep = () => {
-    // Check if all time steps are finished
+    // 1. Check if all time steps are finished
     if (runningStep + 1 == timeSteps.length) {
       // if finished return to default screen
       setState(0);
@@ -138,17 +139,17 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     // If time steps left to be done,
-    // 1. update runningStep
+    // 2. update runningStep
     let newRunningStep = runningStep + 1;
 
-    // 2. update the new step with data
+    // 3. update the new step with data
     let newTimeSteps = [...timeSteps];
     newTimeSteps[newRunningStep].startingTime = Math.floor(Date.now() / 1000);
 
-    // 3. Stop the alarm
+    // 4. Stop the alarm
     stopAlarm();
 
-    // 4. Update the states
+    // 5. Update the states
     setRunningStep(newRunningStep);
     setTimeSteps(newTimeSteps);
   };
