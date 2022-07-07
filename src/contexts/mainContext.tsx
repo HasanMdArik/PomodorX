@@ -59,7 +59,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //? The useEffect function to update state with new runningSteps
   //? It also fires the alarm function
   useEffect(() => {
-    if (runningStep != -1) {
+    if (runningStep == -1) {
       setState(0);
     } else {
       // 1. calculate the new state
