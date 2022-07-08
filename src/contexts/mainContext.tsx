@@ -34,7 +34,15 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //? The variable that tells the countdown if timer is paused or not
   const [isPaused, setIsPaused] = useState(false);
 
+  //? The audio file
+  const [audio, setAudio] = useState();
+
   //* The UseEffect Functions to look for updates
+  //? The initial useEffect function to load audio file
+  useEffect(() => {
+    console.log("Load audio");
+  }, []);
+
   //? The useEffect funtion to create timeSteps from loopCount
   useEffect(() => {
     const newTimeSteps: Array<timeStepData> = [];
