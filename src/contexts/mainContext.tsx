@@ -70,32 +70,31 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
             setAudioSource(audioSrc);
           });
       } else {
-        fetch(birdsChirpingAudio, {
-          mode: "no-cors",
-          cache: "force-cache",
-        })
-          .then(function (response) {
-            return response.arrayBuffer();
-          })
-          .then(function (buffer) {
-            const audioData = new Int8Array(buffer);
-            const storableAudioData = Array.from(audioData);
-            localStorage.setItem(
-              "audioData",
-              JSON.stringify(storableAudioData)
-            );
-            audioCtx
-              .decodeAudioData(buffer, function (decodedData) {
-                audioBuf = decodedData;
-              })
-              .then(() => {
-                audioSrc.buffer = audioBuf; // tell the source which sound to play
-                audioSrc.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
-                audioSrc.loop = true; // tell the source to loop the audio
-                setAudioContext(audioCtx);
-                setAudioSource(audioSrc);
-              });
+        const getAudioData = async () => {
+          let res = await fetch(birdsChirpingAudio, {
+            mode: "no-cors",
+            cache: "force-cache",
           });
+          let buffer = await res.arrayBuffer();
+
+          // Store the audio file
+          const audioData = new Int8Array(buffer);
+          const storableAudioData = Array.from(audioData);
+          localStorage.setItem("audioData", JSON.stringify(storableAudioData));
+
+          // Configure audioContext with the audio data
+          await audioCtx.decodeAudioData(buffer, function (decodedData) {
+            audioBuf = decodedData;
+          });
+
+          audioSrc.buffer = audioBuf; // tell the source which sound to play
+          audioSrc.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
+          audioSrc.loop = true; // tell the source to loop the audio
+          setAudioContext(audioCtx);
+          setAudioSource(audioSrc);
+        };
+
+        getAudioData();
       }
     }
   }, [loopData]);
@@ -150,7 +149,6 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   const startAlarm = async () => {
     // Start the alarm
     if (audioContext && audioSource) {
-      console.log(audioContext.state, "Hi from Alarm");
       if (audioContext.state === "suspended") {
         await audioContext.resume();
       }
