@@ -13,7 +13,12 @@ const TimeStepsMenu = ({ state }: { state: number }) => {
     timeSteps.forEach((timeStep, index) => {
       let timePassed = 0;
       let stepState: timeStepStateTypes = timeStepStateTypes.pending;
-      if (timeStep.startingTime != -1) {
+
+      // See if the step is a paused step
+      if (timeStep.startingTime == -2) {
+        stepState = timeStepStateTypes.active;
+        timePassed = timeStep.timePassedBeforePause as number;
+      } else if (timeStep.startingTime != -1) {
         let timeNow = Math.floor(Date.now() / 1000);
         timePassed = timeNow - timeStep.startingTime;
         // Setting the time step depending on timePassed vs step's time
@@ -28,7 +33,9 @@ const TimeStepsMenu = ({ state }: { state: number }) => {
         <TimeStepBlock
           stepState={stepState}
           stepType={timeStep.type}
+          timePassed={timePassed}
           isNew={index + 1 > loopData.pastLoopCount * 2}
+          index={index}
           key={index}
         />
       );

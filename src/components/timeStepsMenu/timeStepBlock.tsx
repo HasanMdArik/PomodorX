@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { useMainContext } from "../../contexts/mainContext";
 import {
   timeStepStateClassNames,
   timePeriods,
@@ -18,17 +19,42 @@ const TimeStepBlock = ({
   stepType,
   timePassed = 0,
   isNew = false,
+  index,
 }: {
   stepState: timeStepStateTypes;
   stepType: timeStepTypes;
-  timePassed?: number;
-  isNew?: boolean;
+  timePassed: number;
+  isNew: boolean;
+  index: any;
 }) => {
+  const [time, setTime] = useState<string>("");
+  const [progressBar, setProgressBar] = useState<HTMLElement>();
+
+  const { isPaused } = useMainContext();
+
+  useEffect(() => {
+    setTime((timePeriods[stepType] - timePassed).toString() + "s");
+    let progessBar = document.getElementById(
+      "timeStep-" + index
+    ) as HTMLElement;
+    setProgressBar(progessBar);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (progressBar && stepState === 1) {
+      if (isPaused) {
+        progressBar.style.animationPlayState = "paused";
+      } else {
+        progressBar.style.animationPlayState = "running";
+      }
+    }
+  }, [isPaused, progressBar]);
+
   return (
     <div
       style={
         {
-          "--time": (timePeriods[stepType] - timePassed).toString() + "s",
+          "--time": time,
         } as any
       }
       className={
@@ -42,17 +68,7 @@ const TimeStepBlock = ({
           <p>{stepContents[stepType]}</p>
         </li>
       </div>
-      <div
-        style={
-          stepState == 1
-            ? {
-                width:
-                  ((timePassed * 100) / timePeriods[stepType]).toString() + "%",
-              }
-            : {}
-        }
-        className="progress"
-      >
+      <div className="progress" id={"timeStep-" + index}>
         <li>
           <p>{stepContents[stepType]}</p>
         </li>
