@@ -41,7 +41,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   const [audioSource, setAudioSource] = useState<AudioBufferSourceNode>();
 
   //* The UseEffect Functions to look for updates
-  //? The initial useEffect function to load audio file
+  //? The useEffect function to load audio file
   useEffect(() => {
     if (
       loopData.loopCount > 0 &&
