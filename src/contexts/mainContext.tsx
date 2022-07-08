@@ -6,7 +6,7 @@ import {
   timeStepData,
   timeStepTypes,
 } from "../data/dataTypes";
-
+import birdsChirpingAudio from "../assets/birdsChirping.mp3";
 const MainContext = React.createContext({} as mainContextInterface);
 
 export const useMainContext = () => {
@@ -34,14 +34,48 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //? The variable that tells the countdown if timer is paused or not
   const [isPaused, setIsPaused] = useState(false);
 
+  //? The audio context
+  const [audioContext, setAudioContext] = useState<AudioContext>();
+
   //? The audio file
-  const [audio, setAudio] = useState();
+  const [audioSource, setAudioSource] = useState<AudioBufferSourceNode>();
 
   //* The UseEffect Functions to look for updates
   //? The initial useEffect function to load audio file
   useEffect(() => {
-    console.log("Load audio");
-  }, []);
+    if (
+      loopData.loopCount > 0 &&
+      audioSource === undefined &&
+      audioContext === undefined
+    ) {
+      const audioCtx = new AudioContext();
+      let audioSrc = audioCtx.createBufferSource();
+      let audioBuf: AudioBuffer;
+
+      fetch(birdsChirpingAudio, {
+        mode: "no-cors",
+        cache: "force-cache",
+      })
+        .then(function (response) {
+          return response.arrayBuffer();
+        })
+        .then(function (buffer) {
+          // const uintArr = new Int8Array(buffer);
+          // console.log(uintArr);
+          audioCtx
+            .decodeAudioData(buffer, function (decodedData) {
+              audioBuf = decodedData;
+            })
+            .then(() => {
+              audioSrc.buffer = audioBuf; // tell the source which sound to play
+              audioSrc.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
+              audioSrc.loop = true; // tell the source to loop the audio
+              setAudioContext(audioCtx);
+              setAudioSource(audioSrc);
+            });
+        });
+    }
+  }, [loopData]);
 
   //? The useEffect funtion to create timeSteps from loopCount
   useEffect(() => {
@@ -81,14 +115,22 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
 
   //* Private functions
   const stopAlarm = () => {
-    console.log("Alarm stopped");
+    if (audioSource) {
+      audioSource.stop(0);
+    }
   };
 
   //* The other functions
   //? The function to start the alarm
-  const startAlarm = () => {
-    console.log("Current time step ended");
+  const startAlarm = async () => {
     // Start the alarm
+    if (audioContext && audioSource) {
+      console.log(audioContext.state, "Hi from Alarm");
+      if (audioContext.state === "suspended") {
+        await audioContext.resume();
+      }
+      audioSource.start(0);
+    }
   };
 
   //? The function to cancel the timer

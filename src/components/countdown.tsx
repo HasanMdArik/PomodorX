@@ -23,7 +23,7 @@ const Countdown = () => {
     startNextStep,
   } = useMainContext();
 
-  const [hasStepFinished, setIsStepFinished] = useState(false);
+  const [hasStepFinished, setHasStepFinished] = useState<boolean>();
 
   const stepType = timeSteps[runningStep] ? timeSteps[runningStep].type : 0;
 
@@ -32,7 +32,9 @@ const Countdown = () => {
       "countdown"
     ) as HTMLElement;
     let timeStep = timeSteps[runningStep];
-    setIsStepFinished(false);
+    let alarmFired = false;
+    let setStepFinised = false;
+    setHasStepFinished(false);
     let countDownUpdateInterval = setInterval(() => {
       if (!isPaused) {
         // get time left
@@ -40,9 +42,14 @@ const Countdown = () => {
           timeStep.stepTime -
           (Math.floor(Date.now() / 1000) - timeStep.startingTime);
 
-        if (timeLeft === 0) {
+        if (timeLeft <= 3 && !alarmFired) {
           startAlarm();
-          setIsStepFinished(true);
+          alarmFired = true;
+        }
+
+        if (timeLeft <= 0 && !setStepFinised) {
+          setHasStepFinished(true);
+          setStepFinised = true;
         }
 
         if (timeLeft >= 0) {
