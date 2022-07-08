@@ -98,6 +98,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
       loopCount: 0,
       pastLoopCount: 0,
     });
+    setIsPaused(false);
     setRunningStep(-1);
     setTimeSteps([]);
   };
