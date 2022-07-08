@@ -12,7 +12,7 @@ export const primaryColors = ["#136d27", "#591e16", "#0c364b", "#372063"];
 export const stateBasedClassName = ["idle", "work", "short", "long"];
 
 // Time period of different time step types
-export const timePeriods = [1500, 300, 1800];
+export const timePeriods = [15, 300, 1800];
 
 // classNames depending on the stepState value(to be used as it's index)
 // if the index is 0, it means nor active nor finished (means pending)

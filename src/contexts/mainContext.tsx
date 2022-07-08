@@ -52,28 +52,51 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
       let audioSrc = audioCtx.createBufferSource();
       let audioBuf: AudioBuffer;
 
-      fetch(birdsChirpingAudio, {
-        mode: "no-cors",
-        cache: "force-cache",
-      })
-        .then(function (response) {
-          return response.arrayBuffer();
+      let storedAudioData = localStorage.getItem("audioData");
+      if (storedAudioData !== null) {
+        let audioArr = JSON.parse(storedAudioData);
+        let audioIntArr = new Int8Array(audioArr);
+
+        // Configure the audioContext and audioSource
+        audioCtx
+          .decodeAudioData(audioIntArr.buffer, function (decodedData) {
+            audioBuf = decodedData;
+          })
+          .then(() => {
+            audioSrc.buffer = audioBuf; // tell the source which sound to play
+            audioSrc.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
+            audioSrc.loop = true; // tell the source to loop the audio
+            setAudioContext(audioCtx);
+            setAudioSource(audioSrc);
+          });
+      } else {
+        fetch(birdsChirpingAudio, {
+          mode: "no-cors",
+          cache: "force-cache",
         })
-        .then(function (buffer) {
-          // const uintArr = new Int8Array(buffer);
-          // console.log(uintArr);
-          audioCtx
-            .decodeAudioData(buffer, function (decodedData) {
-              audioBuf = decodedData;
-            })
-            .then(() => {
-              audioSrc.buffer = audioBuf; // tell the source which sound to play
-              audioSrc.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
-              audioSrc.loop = true; // tell the source to loop the audio
-              setAudioContext(audioCtx);
-              setAudioSource(audioSrc);
-            });
-        });
+          .then(function (response) {
+            return response.arrayBuffer();
+          })
+          .then(function (buffer) {
+            const audioData = new Int8Array(buffer);
+            const storableAudioData = Array.from(audioData);
+            localStorage.setItem(
+              "audioData",
+              JSON.stringify(storableAudioData)
+            );
+            audioCtx
+              .decodeAudioData(buffer, function (decodedData) {
+                audioBuf = decodedData;
+              })
+              .then(() => {
+                audioSrc.buffer = audioBuf; // tell the source which sound to play
+                audioSrc.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
+                audioSrc.loop = true; // tell the source to loop the audio
+                setAudioContext(audioCtx);
+                setAudioSource(audioSrc);
+              });
+          });
+      }
     }
   }, [loopData]);
 
@@ -116,7 +139,9 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //* Private functions
   const stopAlarm = () => {
     if (audioSource) {
-      audioSource.stop(0);
+      try {
+        audioSource.stop(0);
+      } catch (_) {}
     }
   };
 
@@ -141,6 +166,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
       pastLoopCount: 0,
     });
     setIsPaused(false);
+    stopAlarm();
     setRunningStep(-1);
     setTimeSteps([]);
   };
