@@ -25,9 +25,14 @@ const LoopInput = () => {
           <input
             value={loopCount}
             min={0}
+            max={12}
             onChange={(e) => {
               setLoopCount(
-                parseInt(e.target.value) ? parseInt(e.target.value) : 0
+                parseInt(e.target.value)
+                  ? parseInt(e.target.value) > 12
+                    ? 12
+                    : parseInt(e.target.value)
+                  : 0
               );
             }}
             placeholder="Number of times you want to do the loop"
