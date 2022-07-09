@@ -36,12 +36,9 @@ export interface mainContextInterface {
   state: number;
   loopData: loopData;
   runningStep: number;
-  isPaused: boolean;
   timeSteps: Array<timeStepData>;
   setLoopData: React.Dispatch<React.SetStateAction<loopData>>;
   startAlarm: Function;
   cancelTimer: Function;
-  pauseTimer: Function;
-  resumeTimer: Function;
   startNextStep: Function;
 }

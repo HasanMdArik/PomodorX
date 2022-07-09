@@ -28,27 +28,10 @@ const TimeStepBlock = ({
   index: any;
 }) => {
   const [time, setTime] = useState<string>("");
-  const [progressBar, setProgressBar] = useState<HTMLElement>();
-
-  const { isPaused } = useMainContext();
 
   useEffect(() => {
     setTime((timePeriods[stepType] - timePassed).toString() + "s");
-    let progessBar = document.getElementById(
-      "timeStep-" + index
-    ) as HTMLElement;
-    setProgressBar(progessBar);
-  }, []);
-
-  useLayoutEffect(() => {
-    if (progressBar && stepState === 1) {
-      if (isPaused) {
-        progressBar.style.animationPlayState = "paused";
-      } else {
-        progressBar.style.animationPlayState = "running";
-      }
-    }
-  }, [isPaused, progressBar]);
+  }, [timePassed]);
 
   return (
     <div
@@ -68,7 +51,7 @@ const TimeStepBlock = ({
           <p>{stepContents[stepType]}</p>
         </li>
       </div>
-      <div className="progress" id={"timeStep-" + index}>
+      <div className="progress">
         <li>
           <p>{stepContents[stepType]}</p>
         </li>

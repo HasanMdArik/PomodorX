@@ -15,10 +15,7 @@ const TimeStepsMenu = ({ state }: { state: number }) => {
       let stepState: timeStepStateTypes = timeStepStateTypes.pending;
 
       // See if the step is a paused step
-      if (timeStep.startingTime == -2) {
-        stepState = timeStepStateTypes.active;
-        timePassed = timeStep.timePassedBeforePause as number;
-      } else if (timeStep.startingTime != -1) {
+      if (timeStep.startingTime != -1) {
         let timeNow = Math.floor(Date.now() / 1000);
         timePassed = timeNow - timeStep.startingTime;
         // Setting the time step depending on timePassed vs step's time

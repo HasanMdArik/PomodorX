@@ -31,9 +31,6 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //? The timeSteps state will be used by timeStepMenu.tsx and countdown.tsx
   const [timeSteps, setTimeSteps] = useState<Array<timeStepData>>([]);
 
-  //? The variable that tells the countdown if timer is paused or not
-  const [isPaused, setIsPaused] = useState(false);
-
   //? The audio context
   const [audioContext, setAudioContext] = useState<AudioContext>();
 
@@ -41,8 +38,15 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   const [audioSource, setAudioSource] = useState<AudioBufferSourceNode>();
 
   //* The UseEffect Functions to look for updates
-  //? The useEffect function to load audio file
+  //? The initial useEffect function to load data and to store data
+  useEffect(() => {}, []);
+
+  //? The updater useEffect to update data with localStorage
+  useEffect(() => {}, [loopData]);
+
+  //? The useEffect funtion to create timeSteps from loopCount and load audio
   useEffect(() => {
+    //* The Audio Loading Part
     if (
       loopData.loopCount > 0 &&
       audioSource === undefined &&
@@ -69,7 +73,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
             setAudioContext(audioCtx);
             setAudioSource(audioSrc);
           });
-      } else {
+      } else if (audioSource === undefined && audioContext === undefined) {
         const getAudioData = async () => {
           let res = await fetch(birdsChirpingAudio, {
             mode: "no-cors",
@@ -97,10 +101,8 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
         getAudioData();
       }
     }
-  }, [loopData]);
 
-  //? The useEffect funtion to create timeSteps from loopCount
-  useEffect(() => {
+    //* The time steps updating part
     const newTimeSteps: Array<timeStepData> = [];
     let stepsCount = loopData.loopCount * 2; // each loop contains one work step and another break step
     for (let i = 1; i <= stepsCount; i++) {
@@ -163,43 +165,9 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
       loopCount: 0,
       pastLoopCount: 0,
     });
-    setIsPaused(false);
     stopAlarm();
     setRunningStep(-1);
     setTimeSteps([]);
-  };
-
-  //? The function to pause the timer
-  const pauseTimer = () => {
-    // 1. change the step's data so that it works fine after resuming
-    let newTimeSteps = [...timeSteps]; // Can't directly reference cause arrays are referenced by address
-    let passedTime =
-      Math.floor(Date.now() / 1000) - newTimeSteps[runningStep].startingTime;
-    newTimeSteps[runningStep].timePassedBeforePause = passedTime;
-    newTimeSteps[runningStep].startingTime = -2; // -2 is a special value that indicates the step is paused
-
-    // 2. set isPaused to true and set timeSteps to new value
-    setIsPaused(true);
-    setTimeSteps(newTimeSteps);
-  };
-
-  //? The function to resume the timer
-  const resumeTimer = () => {
-    // 1. get data about the step
-    let timeStep = timeSteps[runningStep];
-
-    // 2. update the startingTime of the running step
-    //? We have to subsract timePassedBeforePause with the current time.
-    //? So that, the percentage of the time step menu remains correct
-    const newTimeSteps = [...timeSteps];
-    newTimeSteps[runningStep].startingTime =
-      Math.floor(Date.now() / 1000) -
-      (timeStep.timePassedBeforePause as number); // we can surely tell that it's not undefined
-    newTimeSteps[runningStep].timePassedBeforePause = undefined;
-
-    // 3. Update the states and set isPaused to false
-    setIsPaused(false);
-    setTimeSteps(newTimeSteps);
   };
 
   //? The function to start the next step from the steps
@@ -234,14 +202,11 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   const contextValues: mainContextInterface = {
     loopData,
     runningStep,
-    isPaused,
     state,
     timeSteps,
     setLoopData,
     startAlarm,
     cancelTimer,
-    pauseTimer,
-    resumeTimer,
     startNextStep,
   };
   return (
