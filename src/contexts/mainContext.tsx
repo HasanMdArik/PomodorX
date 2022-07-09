@@ -38,67 +38,65 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   const [audioSource, setAudioSource] = useState<AudioBufferSourceNode>();
 
   //* The UseEffect Functions to look for updates
-  //? The initial useEffect function to load data and to store data
+  //? The initial useEffect function to load data and to store data while closing
   useEffect(() => {}, []);
-
-  //? The updater useEffect to update data with localStorage
-  useEffect(() => {}, [loopData]);
 
   //? The useEffect funtion to create timeSteps from loopCount and load audio
   useEffect(() => {
     //* The Audio Loading Part
-    if (
-      loopData.loopCount > 0 &&
-      audioSource === undefined &&
-      audioContext === undefined
-    ) {
-      const audioCtx = new AudioContext();
-      let audioSrc = audioCtx.createBufferSource();
-      let audioBuf: AudioBuffer;
+    if (audioSource === undefined || audioContext === undefined) {
+      if (loopData.loopCount > 0) {
+        const audioCtx = new AudioContext();
+        let audioSrc = audioCtx.createBufferSource();
+        let audioBuf: AudioBuffer;
 
-      let storedAudioData = localStorage.getItem("audioData");
-      if (storedAudioData !== null) {
-        let audioArr = JSON.parse(storedAudioData);
-        let audioIntArr = new Int8Array(audioArr);
+        let storedAudioData = localStorage.getItem("audioData");
+        if (storedAudioData !== null) {
+          let audioArr = JSON.parse(storedAudioData);
+          let audioIntArr = new Int8Array(audioArr);
 
-        // Configure the audioContext and audioSource
-        audioCtx
-          .decodeAudioData(audioIntArr.buffer, function (decodedData) {
-            audioBuf = decodedData;
-          })
-          .then(() => {
+          // Configure the audioContext and audioSource
+          audioCtx
+            .decodeAudioData(audioIntArr.buffer, function (decodedData) {
+              audioBuf = decodedData;
+            })
+            .then(() => {
+              audioSrc.buffer = audioBuf; // tell the source which sound to play
+              audioSrc.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
+              audioSrc.loop = true; // tell the source to loop the audio
+              setAudioContext(audioCtx);
+              setAudioSource(audioSrc);
+            });
+        } else {
+          const getAudioData = async () => {
+            let res = await fetch(birdsChirpingAudio, {
+              mode: "no-cors",
+              cache: "force-cache",
+            });
+            let buffer = await res.arrayBuffer();
+
+            // Store the audio file
+            const audioData = new Int8Array(buffer);
+            const storableAudioData = Array.from(audioData);
+            localStorage.setItem(
+              "audioData",
+              JSON.stringify(storableAudioData)
+            );
+
+            // Configure audioContext with the audio data
+            await audioCtx.decodeAudioData(buffer, function (decodedData) {
+              audioBuf = decodedData;
+            });
+
             audioSrc.buffer = audioBuf; // tell the source which sound to play
             audioSrc.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
             audioSrc.loop = true; // tell the source to loop the audio
             setAudioContext(audioCtx);
             setAudioSource(audioSrc);
-          });
-      } else if (audioSource === undefined && audioContext === undefined) {
-        const getAudioData = async () => {
-          let res = await fetch(birdsChirpingAudio, {
-            mode: "no-cors",
-            cache: "force-cache",
-          });
-          let buffer = await res.arrayBuffer();
+          };
 
-          // Store the audio file
-          const audioData = new Int8Array(buffer);
-          const storableAudioData = Array.from(audioData);
-          localStorage.setItem("audioData", JSON.stringify(storableAudioData));
-
-          // Configure audioContext with the audio data
-          await audioCtx.decodeAudioData(buffer, function (decodedData) {
-            audioBuf = decodedData;
-          });
-
-          audioSrc.buffer = audioBuf; // tell the source which sound to play
-          audioSrc.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
-          audioSrc.loop = true; // tell the source to loop the audio
-          setAudioContext(audioCtx);
-          setAudioSource(audioSrc);
-        };
-
-        getAudioData();
+          getAudioData();
+        }
       }
     }
 
