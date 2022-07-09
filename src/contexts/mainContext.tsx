@@ -29,10 +29,24 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //? The loopData will be used to get loop-count from loopInput.tsx
   //? Also loading stored value from localStorage if found, else going with default value({ loopCount:0, pastLoopCount: 0 })
   const [loopData, setLoopData] = useState<loopData>(() => {
-    let storedLoopData = localStorage.getItem("loopData");
-    if (storedLoopData) {
-      return JSON.parse(storedLoopData);
-    } else {
+    // First check if window is defined or not, else build will fail
+    if (typeof window === "undefined") {
+      return {
+        loopCount: 0,
+        pastLoopCount: 0,
+      };
+    }
+    try {
+      let storedLoopData = localStorage.getItem("loopData");
+      if (storedLoopData) {
+        return JSON.parse(storedLoopData);
+      } else {
+        return {
+          loopCount: 0,
+          pastLoopCount: 0,
+        };
+      }
+    } catch (_) {
       return {
         loopCount: 0,
         pastLoopCount: 0,
@@ -42,21 +56,29 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //? The running step indicates the index of currently running step
   //? Also loading stored value from localStorage if found, else going with default value(-1)
   const [runningStep, setRunningStep] = useState(() => {
-    let storedRunningStep = localStorage.getItem("runningStep");
-    let storedTimeSteps = localStorage.getItem("timeSteps");
-    if (storedRunningStep && storedTimeSteps) {
-      let parsedRunningStep: number = parseInt(storedRunningStep);
-      let parsedTimeSteps: Array<timeStepData> = JSON.parse(storedTimeSteps);
+    // First check if window is defined or not, else build will fail
+    if (typeof window === "undefined") {
+      return -1;
+    }
+    try {
+      let storedRunningStep = localStorage.getItem("runningStep");
+      let storedTimeSteps = localStorage.getItem("timeSteps");
+      if (storedRunningStep && storedTimeSteps) {
+        let parsedRunningStep: number = parseInt(storedRunningStep);
+        let parsedTimeSteps: Array<timeStepData> = JSON.parse(storedTimeSteps);
 
-      if (
-        parsedRunningStep >= 0 &&
-        parsedTimeSteps.length > parsedRunningStep
-      ) {
-        return parsedRunningStep;
+        if (
+          parsedRunningStep >= 0 &&
+          parsedTimeSteps.length > parsedRunningStep
+        ) {
+          return parsedRunningStep;
+        } else {
+          return -1;
+        }
       } else {
         return -1;
       }
-    } else {
+    } catch (_) {
       return -1;
     }
   });
@@ -64,10 +86,18 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //? The timeSteps state will be used by timeStepMenu.tsx and countdown.tsx
   //? Also loading stored value from localStorage if found, else going with default value([])
   const [timeSteps, setTimeSteps] = useState<Array<timeStepData>>(() => {
-    let storedTimeSteps = localStorage.getItem("timeSteps");
-    if (storedTimeSteps) {
-      return JSON.parse(storedTimeSteps);
-    } else {
+    // First check if window is defined or not, else build will fail
+    if (typeof window === "undefined") {
+      return -1;
+    }
+    try {
+      let storedTimeSteps = localStorage.getItem("timeSteps");
+      if (storedTimeSteps) {
+        return JSON.parse(storedTimeSteps);
+      } else {
+        return [];
+      }
+    } catch (_) {
       return [];
     }
   });
