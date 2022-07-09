@@ -37,7 +37,7 @@ export interface mainContextInterface {
   loopData: loopData;
   runningStep: number;
   timeSteps: Array<timeStepData>;
-  initialDataUpdateTrigger: boolean;
+  // initialDataUpdateTrigger: boolean;
   setLoopData: React.Dispatch<React.SetStateAction<loopData>>;
   startAlarm: Function;
   cancelTimer: Function;
