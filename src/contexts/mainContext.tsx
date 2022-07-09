@@ -62,7 +62,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   });
 
   //? The timeSteps state will be used by timeStepMenu.tsx and countdown.tsx
-  //? Also loading stored value from localStorage if found, else going with default value(-1)
+  //? Also loading stored value from localStorage if found, else going with default value([])
   const [timeSteps, setTimeSteps] = useState<Array<timeStepData>>(() => {
     let storedTimeSteps = localStorage.getItem("timeSteps");
     if (storedTimeSteps) {
