@@ -3,7 +3,7 @@ import type { GatsbyConfig } from "gatsby";
 const config: GatsbyConfig = {
   siteMetadata: {
     title: `pomodorx`,
-    siteUrl: `https://www.yourdomain.tld`,
+    siteUrl: `https://pomodorx.netlify.app`,
   },
   plugins: ["gatsby-plugin-react-helmet", "gatsby-plugin-postcss"],
 };
