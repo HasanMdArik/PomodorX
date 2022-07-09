@@ -19,16 +19,13 @@ const TimeStepBlock = ({
   stepType,
   timePassed = 0,
   isNew = false,
-  index,
 }: {
   stepState: timeStepStateTypes;
   stepType: timeStepTypes;
   timePassed: number;
   isNew: boolean;
-  index: any;
 }) => {
   const [time, setTime] = useState<string>("");
-
   useEffect(() => {
     setTime((timePeriods[stepType] - timePassed).toString() + "s");
   }, [timePassed]);
