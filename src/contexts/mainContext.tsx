@@ -27,6 +27,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   // 3 stands for long break
   const [state, setState] = useState(0);
   //? The loopData will be used to get loop-count from loopInput.tsx
+  //? Also loading stored value from localStorage if found, else going with default value({ loopCount:0, pastLoopCount: 0 })
   const [loopData, setLoopData] = useState<loopData>(() => {
     let storedLoopData = localStorage.getItem("loopData");
     if (storedLoopData) {
@@ -39,6 +40,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
     }
   });
   //? The running step indicates the index of currently running step
+  //? Also loading stored value from localStorage if found, else going with default value(-1)
   const [runningStep, setRunningStep] = useState(() => {
     let storedRunningStep = localStorage.getItem("runningStep");
     let storedTimeSteps = localStorage.getItem("timeSteps");
@@ -60,6 +62,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   });
 
   //? The timeSteps state will be used by timeStepMenu.tsx and countdown.tsx
+  //? Also loading stored value from localStorage if found, else going with default value(-1)
   const [timeSteps, setTimeSteps] = useState<Array<timeStepData>>(() => {
     let storedTimeSteps = localStorage.getItem("timeSteps");
     if (storedTimeSteps) {
