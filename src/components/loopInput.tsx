@@ -2,15 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useMainContext } from "../contexts/mainContext";
 
 const LoopInput = () => {
+  const { setLoopData, startNextStep, loopData } = useMainContext();
   const [pastLoopCount, setPastLoopCount] = useState(0);
-  const [loopCount, setLoopCount] = useState(0);
-  const { setLoopData, startNextStep, initialDataUpdateTrigger, loopData } =
-    useMainContext();
-
-  //* Initial useEffect to load stored inital data
-  useEffect(() => {
-    setLoopCount(loopData.loopCount);
-  }, [initialDataUpdateTrigger]);
+  const [loopCount, setLoopCount] = useState(
+    loopData.loopCount >= 0 ? loopData.loopCount : 0
+  );
 
   //* Updating the steps data if the loop count changes
   useEffect(() => {
