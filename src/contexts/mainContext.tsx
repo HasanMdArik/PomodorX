@@ -1,4 +1,10 @@
-import React, { ReactNode, useContext, useEffect, useState } from "react";
+import React, {
+  ReactNode,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { timePeriods } from "../data/data";
 import {
   mainContextInterface,
@@ -75,63 +81,6 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
 
   //? The useEffect funtion to create timeSteps from loopCount and load audio
   useEffect(() => {
-    //* The Audio Loading Part
-    if (audioSource === undefined || audioContext === undefined) {
-      if (loopData.loopCount > 0) {
-        const audioCtx = new AudioContext();
-        let audioSrc = audioCtx.createBufferSource();
-        let audioBuf: AudioBuffer;
-
-        let storedAudioData = localStorage.getItem("audioData");
-        if (storedAudioData !== null) {
-          let audioArr = JSON.parse(storedAudioData);
-          let audioIntArr = new Int8Array(audioArr);
-
-          // Configure the audioContext and audioSource
-          audioCtx
-            .decodeAudioData(audioIntArr.buffer, function (decodedData) {
-              audioBuf = decodedData;
-            })
-            .then(() => {
-              audioSrc.buffer = audioBuf; // tell the source which sound to play
-              audioSrc.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
-              audioSrc.loop = true; // tell the source to loop the audio
-              setAudioContext(audioCtx);
-              setAudioSource(audioSrc);
-            });
-        } else {
-          const getAudioData = async () => {
-            let res = await fetch(birdsChirpingAudio, {
-              mode: "no-cors",
-              cache: "force-cache",
-            });
-            let buffer = await res.arrayBuffer();
-
-            // Store the audio file
-            const audioData = new Int8Array(buffer);
-            const storableAudioData = Array.from(audioData);
-            localStorage.setItem(
-              "audioData",
-              JSON.stringify(storableAudioData)
-            );
-
-            // Configure audioContext with the audio data
-            await audioCtx.decodeAudioData(buffer, function (decodedData) {
-              audioBuf = decodedData;
-            });
-
-            audioSrc.buffer = audioBuf; // tell the source which sound to play
-            audioSrc.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
-            audioSrc.loop = true; // tell the source to loop the audio
-            setAudioContext(audioCtx);
-            setAudioSource(audioSrc);
-          };
-
-          getAudioData();
-        }
-      }
-    }
-
     //* The time steps updating part
     const newTimeSteps: Array<timeStepData> = [];
     let stepsCount = loopData.loopCount * 2; // each loop contains one work step and another break step
@@ -167,12 +116,80 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [runningStep]);
 
+  //* Event listeners
+  //? The event listener to initialize audioContext
+  useLayoutEffect(() => {
+    const bodyElement = document.body;
+    //? The function to decide whether to trigger initialization function or to remove the event listener
+    const eventFunction = () => {
+      if (audioContext === undefined || audioSource === undefined) {
+        initializeAudioContext();
+      } else {
+        bodyElement.removeEventListener("click", eventFunction);
+      }
+    };
+    bodyElement.addEventListener("click", eventFunction);
+  }, []);
+
   //* Private functions
+  //? Pretty self-explainatory
   const stopAlarm = () => {
     if (audioSource) {
       try {
         audioSource.stop(0);
       } catch (_) {}
+    }
+  };
+
+  //? The function to initialize audio context
+  const initializeAudioContext = () => {
+    const audioCtx = new AudioContext();
+    let audioSrc = audioCtx.createBufferSource();
+    let audioBuf: AudioBuffer;
+
+    let storedAudioData = localStorage.getItem("audioData");
+    if (storedAudioData !== null) {
+      let audioArr = JSON.parse(storedAudioData);
+      let audioIntArr = new Int8Array(audioArr);
+
+      // Configure the audioContext and audioSource
+      audioCtx
+        .decodeAudioData(audioIntArr.buffer, function (decodedData) {
+          audioBuf = decodedData;
+        })
+        .then(() => {
+          audioSrc.buffer = audioBuf; // tell the source which sound to play
+          audioSrc.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
+          audioSrc.loop = true; // tell the source to loop the audio
+          setAudioContext(audioCtx);
+          setAudioSource(audioSrc);
+        });
+    } else {
+      const getAudioData = async () => {
+        let res = await fetch(birdsChirpingAudio, {
+          mode: "no-cors",
+          cache: "force-cache",
+        });
+        let buffer = await res.arrayBuffer();
+
+        // Store the audio file
+        const audioData = new Int8Array(buffer);
+        const storableAudioData = Array.from(audioData);
+        localStorage.setItem("audioData", JSON.stringify(storableAudioData));
+
+        // Configure audioContext with the audio data
+        await audioCtx.decodeAudioData(buffer, function (decodedData) {
+          audioBuf = decodedData;
+        });
+
+        audioSrc.buffer = audioBuf; // tell the source which sound to play
+        audioSrc.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
+        audioSrc.loop = true; // tell the source to loop the audio
+        setAudioContext(audioCtx);
+        setAudioSource(audioSrc);
+      };
+
+      getAudioData();
     }
   };
 
