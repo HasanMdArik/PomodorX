@@ -4,7 +4,13 @@ import { useMainContext } from "../contexts/mainContext";
 const LoopInput = () => {
   const [pastLoopCount, setPastLoopCount] = useState(0);
   const [loopCount, setLoopCount] = useState(0);
-  const { setLoopData, startNextStep } = useMainContext();
+  const { setLoopData, startNextStep, initialDataUpdateTrigger, loopData } =
+    useMainContext();
+
+  //* Initial useEffect to load stored inital data
+  useEffect(() => {
+    setLoopCount(loopData.loopCount);
+  }, [initialDataUpdateTrigger]);
 
   //* Updating the steps data if the loop count changes
   useEffect(() => {

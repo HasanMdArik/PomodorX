@@ -31,6 +31,11 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //? The timeSteps state will be used by timeStepMenu.tsx and countdown.tsx
   const [timeSteps, setTimeSteps] = useState<Array<timeStepData>>([]);
 
+  //? The variable to let other components know about stored to be updated
+  //* This variable is updater to trigger useEffect functions
+  const [initialDataUpdateTrigger, setIntialDataUpdateTrigger] =
+    useState(false);
+
   //? The audio context
   const [audioContext, setAudioContext] = useState<AudioContext>();
 
@@ -38,8 +43,35 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   const [audioSource, setAudioSource] = useState<AudioBufferSourceNode>();
 
   //* The UseEffect Functions to look for updates
-  //? The initial useEffect function to load data and to store data while closing
-  useEffect(() => {}, []);
+  //? The initial useEffect function to load data
+  useEffect(() => {
+    let storedLoopData = localStorage.getItem("loopData");
+    let storedRunningStep = localStorage.getItem("runningStep");
+    let storedTimeSteps = localStorage.getItem("timeSteps");
+    if (storedLoopData && storedRunningStep && storedTimeSteps) {
+      let parsedLoopData: loopData = JSON.parse(storedLoopData);
+      let parsedRunningStep: number = parseInt(storedRunningStep);
+      let parsedTimeSteps: Array<timeStepData> = JSON.parse(storedTimeSteps);
+      // Check if data needs to updated for the paricular types
+      if (parsedLoopData.loopCount != 0) setLoopData(parsedLoopData);
+      if (parsedRunningStep >= 0) setRunningStep(parsedRunningStep);
+      if (parsedTimeSteps.length > 0) setTimeSteps(parsedTimeSteps);
+      // if any updates occured, trigger the updating function
+      if (
+        parsedLoopData.loopCount != 0 ||
+        parsedRunningStep >= 0 ||
+        parsedTimeSteps.length > 0
+      )
+        setIntialDataUpdateTrigger(!initialDataUpdateTrigger);
+    }
+  }, []);
+
+  //? The useEffect function to update data with localStorage
+  useEffect(() => {
+    localStorage.setItem("loopData", JSON.stringify(loopData));
+    localStorage.setItem("runningStep", runningStep.toString());
+    localStorage.setItem("timeSteps", JSON.stringify(timeSteps));
+  }, [loopData, runningStep, timeSteps]);
 
   //? The useEffect funtion to create timeSteps from loopCount and load audio
   useEffect(() => {
@@ -202,6 +234,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
     runningStep,
     state,
     timeSteps,
+    initialDataUpdateTrigger,
     setLoopData,
     startAlarm,
     cancelTimer,
