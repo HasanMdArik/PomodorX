@@ -14,10 +14,12 @@ const LoopInput = () => {
 
   //* Updating the steps data if the loop count changes
   useEffect(() => {
-    setLoopData({
-      pastLoopCount: pastLoopCount,
-      loopCount: loopCount,
-    });
+    if (loopData.loopCount != loopCount) {
+      setLoopData({
+        pastLoopCount: pastLoopCount,
+        loopCount: loopCount,
+      });
+    }
     setPastLoopCount(loopCount);
   }, [loopCount]);
 
