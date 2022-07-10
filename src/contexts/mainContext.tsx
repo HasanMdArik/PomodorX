@@ -164,9 +164,9 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   useLayoutEffect(() => {
     const bodyElement = document.body;
     //? The function to decide whether to trigger initialization function or to remove the event listener
-    const eventFunction = () => {
+    const eventFunction = async () => {
       if (audioContext === undefined || audioSource === undefined) {
-        initializeAudioContext();
+        await initializeAudioContext();
       } else {
         bodyElement.removeEventListener("click", eventFunction);
       }
@@ -175,17 +175,8 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   //* Private functions
-  //? Pretty self-explainatory
-  const stopAlarm = () => {
-    if (audioSource) {
-      try {
-        audioSource.stop(0);
-      } catch (_) {}
-    }
-  };
-
   //? The function to initialize audio context
-  const initializeAudioContext = () => {
+  const initializeAudioContext = async () => {
     const audioCtx = new AudioContext();
     let audioSrc = audioCtx.createBufferSource();
     let audioBuf: AudioBuffer;
@@ -196,14 +187,16 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
       let audioIntArr = new Int8Array(audioArr);
 
       // Configure the audioContext and audioSource
-      audioCtx
+      await audioCtx
         .decodeAudioData(audioIntArr.buffer, function (decodedData) {
           audioBuf = decodedData;
         })
-        .then(() => {
+        .then(async () => {
           audioSrc.buffer = audioBuf; // tell the source which sound to play
           audioSrc.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
           audioSrc.loop = true; // tell the source to loop the audio
+          audioSrc.start();
+          await audioCtx.suspend();
           setAudioContext(audioCtx);
           setAudioSource(audioSrc);
         });
@@ -228,6 +221,8 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
         audioSrc.buffer = audioBuf; // tell the source which sound to play
         audioSrc.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
         audioSrc.loop = true; // tell the source to loop the audio
+        audioSrc.start();
+        await audioCtx.suspend();
         setAudioContext(audioCtx);
         setAudioSource(audioSrc);
       };
@@ -236,15 +231,24 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  //? Pretty self-explainatory
+  const stopAlarm = async () => {
+    // Start the alarm
+    if (audioContext) {
+      if (audioContext.state === "running") {
+        await audioContext.suspend();
+      }
+    }
+  };
+
   //* The other functions
   //? The function to start the alarm
   const startAlarm = async () => {
     // Start the alarm
-    if (audioContext && audioSource) {
+    if (audioContext) {
       if (audioContext.state === "suspended") {
         await audioContext.resume();
       }
-      audioSource.start(0);
     }
   };
 
