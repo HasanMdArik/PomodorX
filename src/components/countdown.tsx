@@ -16,6 +16,7 @@ const Countdown = () => {
     useMainContext();
 
   const [hasStepFinished, setHasStepFinished] = useState<boolean>();
+  const [showNext, setShowNext] = useState<boolean>();
 
   const stepType = timeSteps[runningStep] ? timeSteps[runningStep].type : 0;
 
@@ -34,6 +35,7 @@ const Countdown = () => {
         (Math.floor(Date.now() / 1000) - timeStep.startingTime);
 
       if (timeLeft <= 3 && !alarmFired) {
+        setShowNext(true);
         startAlarm();
         alarmFired = true;
       }
@@ -73,14 +75,18 @@ const Countdown = () => {
         {hasStepFinished ? "Click next to continue!" : footNote[stepType]}
       </p>
       <div className="flex">
-        {hasStepFinished ? (
+        {showNext && (
           <button
-            onClick={() => startNextStep()}
+            onClick={async () => {
+              await startNextStep();
+              setShowNext(false);
+            }}
             className="primary-bg primary-color primary-border rounded-[1.25rem] text-3xl py-1.5 px-6 mx-2"
           >
             Next
           </button>
-        ) : (
+        )}
+        {!hasStepFinished && (
           <button
             onClick={() => cancelTimer()}
             className="primary-bg primary-color primary-border rounded-[1.25rem] text-3xl py-1.5 px-6 mx-2"
