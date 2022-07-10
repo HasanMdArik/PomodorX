@@ -279,6 +279,10 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
       setTimeSteps([]);
       setRunningStep(-1);
       stopAlarm();
+      setLoopData({
+        loopCount: 0,
+        pastLoopCount: 0,
+      });
       return;
     }
     // If time steps left to be done,
