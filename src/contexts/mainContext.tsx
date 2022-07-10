@@ -108,10 +108,28 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
     useState(false);
 
   //? The audio context
-  const [audioContext, setAudioContext] = useState<AudioContext>();
+  const [audioContext, setAudioContext] = useState(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    try {
+      return new AudioContext();
+    } catch (_) {
+      return;
+    }
+  });
 
   //? The audio file
-  const [audioSource, setAudioSource] = useState<AudioBufferSourceNode>();
+  const [audioSource, setAudioSource] = useState(() => {
+    if (typeof window === "undefined" || !audioContext) {
+      return;
+    }
+    try {
+      return audioContext.createBufferSource();
+    } catch (_) {
+      return;
+    }
+  });
 
   //? The useEffect function to update data with localStorage
   useEffect(() => {
@@ -163,12 +181,14 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //? The event listener to initialize audioContext
   useLayoutEffect(() => {
     const bodyElement = document.body;
+    let intializedAudio = false;
     //? The function to decide whether to trigger initialization function or to remove the event listener
-    const eventFunction = async () => {
-      if (audioContext === undefined || audioSource === undefined) {
-        await initializeAudioContext();
-      } else {
+    const eventFunction = () => {
+      if (intializedAudio) {
         bodyElement.removeEventListener("click", eventFunction);
+      } else {
+        initializeAudioContext();
+        intializedAudio = true;
       }
     };
     bodyElement.addEventListener("click", eventFunction);
@@ -177,31 +197,20 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //* Private functions
   //? The function to initialize audio context
   const initializeAudioContext = async () => {
-    const audioCtx = new AudioContext();
-    let audioSrc = audioCtx.createBufferSource();
-    let audioBuf: AudioBuffer;
+    if (audioContext && audioSource) {
+      let audioBuf: AudioBuffer;
 
-    let storedAudioData = localStorage.getItem("audioData");
-    if (storedAudioData !== null) {
-      let audioArr = JSON.parse(storedAudioData);
-      let audioIntArr = new Int8Array(audioArr);
+      let storedAudioData = localStorage.getItem("audioData");
+      if (storedAudioData !== null) {
+        let audioArr = JSON.parse(storedAudioData);
+        let audioIntArr = new Int8Array(audioArr);
 
-      // Configure the audioContext and audioSource
-      await audioCtx
-        .decodeAudioData(audioIntArr.buffer, function (decodedData) {
-          audioBuf = decodedData;
-        })
-        .then(async () => {
-          audioSrc.buffer = audioBuf; // tell the source which sound to play
-          audioSrc.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
-          audioSrc.loop = true; // tell the source to loop the audio
-          audioSrc.start();
-          await audioCtx.suspend();
-          setAudioContext(audioCtx);
-          setAudioSource(audioSrc);
-        });
-    } else {
-      const getAudioData = async () => {
+        // Configure the audioContext and audioSource
+        audioBuf = await audioContext.decodeAudioData(
+          audioIntArr.buffer,
+          (decodedData) => decodedData
+        );
+      } else {
         let res = await fetch(birdsChirpingAudio, {
           mode: "no-cors",
           cache: "force-cache",
@@ -214,27 +223,32 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
         localStorage.setItem("audioData", JSON.stringify(storableAudioData));
 
         // Configure audioContext with the audio data
-        await audioCtx.decodeAudioData(buffer, function (decodedData) {
-          audioBuf = decodedData;
-        });
+        audioBuf = await audioContext.decodeAudioData(
+          buffer,
+          (decodedData) => decodedData
+        );
+      }
 
-        audioSrc.buffer = audioBuf; // tell the source which sound to play
-        audioSrc.connect(audioCtx.destination); // connect the source to the context's destination (the speakers)
-        audioSrc.loop = true; // tell the source to loop the audio
-        audioSrc.start();
-        await audioCtx.suspend();
-        setAudioContext(audioCtx);
-        setAudioSource(audioSrc);
-      };
+      // Configure audioSource
+      audioSource.buffer = audioBuf; // tell the source which sound to play
+      audioSource.connect(audioContext.destination); // connect the source to the context's destination (the speakers)
+      audioSource.loop = true; // tell the source to loop the audio
+      audioSource.start();
 
-      getAudioData();
+      // if the audio context is not suspended, suspend it to prevent unwanted playing of the audio
+      if (audioContext.state === "running") await audioContext.suspend();
+
+      // Set the states
+      setAudioContext(audioContext);
+      setAudioSource(audioSource);
     }
   };
 
   //? Pretty self-explainatory
   const stopAlarm = async () => {
-    // Start the alarm
+    // Stop the alarm
     if (audioContext) {
+      console.log("Stop:", audioContext.state);
       if (audioContext.state === "running") {
         await audioContext.suspend();
       }
@@ -246,6 +260,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   const startAlarm = async () => {
     // Start the alarm
     if (audioContext) {
+      console.log("Start:", audioContext.state);
       if (audioContext.state === "suspended") {
         await audioContext.resume();
       }
@@ -253,7 +268,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   //? The function to cancel the timer
-  const cancelTimer = () => {
+  const cancelTimer = async () => {
     // Turn all states to default(except the state as that is handled by a useEffect func)
     setLoopData({
       loopCount: 0,
@@ -262,6 +277,9 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
     stopAlarm();
     setRunningStep(-1);
     setTimeSteps([]);
+    if (audioContext && audioContext.state === "running") {
+      await audioContext.suspend();
+    }
   };
 
   //? The function to start the next step from the steps
@@ -273,6 +291,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
       setState(0);
       setTimeSteps([]);
       setRunningStep(-1);
+      stopAlarm();
       return;
     }
     // If time steps left to be done,
