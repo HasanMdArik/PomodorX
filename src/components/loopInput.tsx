@@ -7,6 +7,7 @@ const LoopInput = () => {
   const [loopCount, setLoopCount] = useState(
     loopData.loopCount >= 0 ? loopData.loopCount : 0
   );
+  const [isDisabled, setIsDisabled] = useState(false);
 
   //* Updating the steps data if the loop count changes
   useEffect(() => {
@@ -17,6 +18,13 @@ const LoopInput = () => {
       });
     }
     setPastLoopCount(loopCount);
+
+    // Setting isDisabled to disable the user inputs for the business layer to have valid values
+    if (loopCount <= 0) {
+      setIsDisabled(true);
+    } else if (isDisabled) {
+      setIsDisabled(false);
+    }
   }, [loopCount]);
 
   return (
@@ -55,7 +63,7 @@ const LoopInput = () => {
               <div className="arr" />
             </button>
             <button
-              disabled={loopCount <= 0}
+              disabled={isDisabled}
               onClick={() => {
                 setLoopCount(loopCount - 1);
               }}
@@ -71,7 +79,7 @@ const LoopInput = () => {
         <button
           className="primary-bg main-border rounded-[1.25rem] text-3xl py-1.5 px-10"
           id="startButton"
-          disabled={loopCount <= 0}
+          disabled={isDisabled}
           onClick={() => {
             startNextStep();
           }}
