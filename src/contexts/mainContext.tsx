@@ -247,11 +247,8 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //? Pretty self-explainatory
   const stopAlarm = async () => {
     // Stop the alarm
-    if (audioContext) {
-      console.log("Stop:", audioContext.state);
-      if (audioContext.state === "running") {
-        await audioContext.suspend();
-      }
+    if (audioContext?.state === "running") {
+      await audioContext.suspend();
     }
   };
 
@@ -259,27 +256,21 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   //? The function to start the alarm
   const startAlarm = async () => {
     // Start the alarm
-    if (audioContext) {
-      console.log("Start:", audioContext.state);
-      if (audioContext.state === "suspended") {
-        await audioContext.resume();
-      }
+    if (audioContext?.state === "suspended") {
+      await audioContext.resume();
     }
   };
 
   //? The function to cancel the timer
   const cancelTimer = async () => {
     // Turn all states to default(except the state as that is handled by a useEffect func)
+    await stopAlarm();
     setLoopData({
       loopCount: 0,
       pastLoopCount: 0,
     });
-    stopAlarm();
     setRunningStep(-1);
     setTimeSteps([]);
-    if (audioContext && audioContext.state === "running") {
-      await audioContext.suspend();
-    }
   };
 
   //? The function to start the next step from the steps
