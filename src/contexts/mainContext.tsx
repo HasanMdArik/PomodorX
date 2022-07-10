@@ -108,7 +108,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
     useState(false);
 
   //? The audio context
-  const [audioContext, setAudioContext] = useState(() => {
+  const [audioContext] = useState(() => {
     if (typeof window === "undefined") {
       return;
     }
@@ -120,7 +120,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
   });
 
   //? The audio file
-  const [audioSource, setAudioSource] = useState(() => {
+  const [audioSource] = useState(() => {
     if (typeof window === "undefined" || !audioContext) {
       return;
     }
@@ -237,10 +237,6 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
 
       // if the audio context is not suspended, suspend it to prevent unwanted playing of the audio
       if (audioContext.state === "running") await audioContext.suspend();
-
-      // Set the states
-      setAudioContext(audioContext);
-      setAudioSource(audioSource);
     }
   };
 
