@@ -140,7 +140,7 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
 
   //? The useEffect funtion to create timeSteps from loopCount or from localStorage
   useEffect(() => {
-    if (timeSteps.length < loopData.loopCount * 2) {
+    if (timeSteps.length != loopData.loopCount * 2) {
       //* The time steps updating part
       const newTimeSteps: Array<timeStepData> = [];
       let stepsCount = loopData.loopCount * 2; // each loop contains one work step and another break step
