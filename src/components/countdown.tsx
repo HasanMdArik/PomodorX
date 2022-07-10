@@ -69,7 +69,7 @@ const Countdown = () => {
     <div className="flex flex-col items-center secondary-color">
       <h2 className="font-extrabold text-5xl mb-3">{timeStepType[stepType]}</h2>
       <p id="countdown" className="font-bold text-9xl mb-2">
-        {stepType === 0 ? "25:00" : stepType === 1 ? "05:00" : "30:00"}
+        --:--
       </p>
       <p className="font-medium text-4xl mb-3">
         {hasStepFinished ? "Click next to continue!" : footNote[stepType]}
