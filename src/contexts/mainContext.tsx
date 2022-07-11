@@ -20,39 +20,6 @@ export const useMainContext = () => {
 };
 
 const MainContextProvider = ({ children }: { children: ReactNode }) => {
-  //? The state variable defines the state of the app
-  // 0 stands for timer not started
-  // 1 stands for work time
-  // 2 stands for short break
-  // 3 stands for long break
-  const [state, setState] = useState(0);
-  //? The loopData will be used to get loop-count from loopInput.tsx
-  //? Also loading stored value from localStorage if found, else going with default value({ loopCount:0, pastLoopCount: 0 })
-  const [loopData, setLoopData] = useState<loopData>(() => {
-    // First check if window is defined or not, else build will fail
-    if (typeof window === "undefined") {
-      return {
-        loopCount: 0,
-        pastLoopCount: 0,
-      };
-    }
-    try {
-      let storedLoopData = localStorage.getItem("loopData");
-      if (storedLoopData) {
-        return JSON.parse(storedLoopData);
-      } else {
-        return {
-          loopCount: 0,
-          pastLoopCount: 0,
-        };
-      }
-    } catch (_) {
-      return {
-        loopCount: 0,
-        pastLoopCount: 0,
-      };
-    }
-  });
   //? The running step indicates the index of currently running step
   //? Also loading stored value from localStorage if found, else going with default value(-1)
   const [runningStep, setRunningStep] = useState(() => {
@@ -80,6 +47,52 @@ const MainContextProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (_) {
       return -1;
+    }
+  });
+
+  //? The state variable defines the state of the app
+  // 0 stands for timer not started
+  // 1 stands for work time
+  // 2 stands for short break
+  // 3 stands for long break
+  const [state, setState] = useState(() => {
+    if (runningStep == -1) {
+      return 0;
+    } else {
+      // 1. calculate the new state
+      //! Need to add one with the runningStep for calculations, because it is an index
+      const newState =
+        (runningStep + 1) % 2 != 0 ? 1 : (runningStep + 1) % 8 != 0 ? 2 : 3;
+      // 2. Update the states
+      return newState;
+    }
+  });
+
+  //? The loopData will be used to get loop-count from loopInput.tsx
+  //? Also loading stored value from localStorage if found, else going with default value({ loopCount:0, pastLoopCount: 0 })
+  const [loopData, setLoopData] = useState<loopData>(() => {
+    // First check if window is defined or not, else build will fail
+    if (typeof window === "undefined") {
+      return {
+        loopCount: 0,
+        pastLoopCount: 0,
+      };
+    }
+    try {
+      let storedLoopData = localStorage.getItem("loopData");
+      if (storedLoopData) {
+        return JSON.parse(storedLoopData);
+      } else {
+        return {
+          loopCount: 0,
+          pastLoopCount: 0,
+        };
+      }
+    } catch (_) {
+      return {
+        loopCount: 0,
+        pastLoopCount: 0,
+      };
     }
   });
 
