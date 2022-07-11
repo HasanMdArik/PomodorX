@@ -12,7 +12,11 @@ const App = () => {
     <main id="main" className={"flex " + stateBasedClassName[state]}>
       <div className="h-screen">
         <div className="relative mb-20">
-          <svg width="400" viewBox="0 0 561 193" fill="none">
+          <svg
+            className="md:w-[350px] lg:w-96"
+            viewBox="0 0 561 193"
+            fill="none"
+          >
             <path
               fillRule="evenodd"
               clipRule="evenodd"
@@ -21,7 +25,7 @@ const App = () => {
             />
           </svg>
           <div className="absolute top-9">
-            <h1 style={{ fontSize: "40px" }} className="pl-5 primary-color">
+            <h1 className="md:text-4xl lg:text-[40px] pl-5 primary-color">
               PomodorX
             </h1>
           </div>
