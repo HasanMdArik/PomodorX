@@ -1,5 +1,6 @@
 import React, { useLayoutEffect, useState } from "react";
 import { useMainContext } from "../contexts/mainContext";
+import { timeStepData } from "../data/dataTypes";
 
 // The time-step type name
 const timeStepType = ["Work Time", "Short Break", "Long Break"];
@@ -28,7 +29,9 @@ const Countdown = () => {
     let alarmFired = false;
     let setStepFinised = false;
     setHasStepFinished(false);
-    let countDownUpdateInterval = setInterval(() => {
+
+    // the coundown updating function
+    const updateCountdown = () => {
       // get time left
       let timeLeft =
         timeStep.stepTime -
@@ -58,11 +61,17 @@ const Countdown = () => {
           minLeft < 10 ? "0" + minLeft : minLeft
         }:${secLeft < 10 ? "0" + secLeft : secLeft}`;
       }
-    }, 1000);
-
-    return () => {
-      clearInterval(countDownUpdateInterval);
     };
+
+    if (timeStep) {
+      updateCountdown();
+      let countDownUpdateInterval = setInterval(() => {
+        updateCountdown();
+      }, 1000);
+      return () => {
+        clearInterval(countDownUpdateInterval);
+      };
+    }
   }, [runningStep]);
 
   return (
