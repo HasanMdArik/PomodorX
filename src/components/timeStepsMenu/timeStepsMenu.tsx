@@ -65,7 +65,7 @@ const TimeStepsMenu = () => {
         data-color={"#1e7d33"}
         className="mt-3 md:mt-5 lg:mt-8 font-medium"
       >
-        <ul className="flex flex-col md:block items-center text-3xl list-disc list-inside">
+        <ul className="flex flex-col h-fit md:block items-center text-3xl list-disc list-inside">
           {steps}
         </ul>
       </div>
