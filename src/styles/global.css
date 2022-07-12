@@ -215,8 +215,8 @@ input[type="number"] {
 
 .loopButton {
   border: none !important;
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -235,18 +235,46 @@ input[type="number"] {
 .arr {
   height: 0;
   width: 0;
-  border: 9px solid transparent;
+  border: 10px solid transparent;
 }
 #up .arr {
   border-top: 0;
-  border-bottom: 15px solid var(--main-color);
-  margin-bottom: 1px;
+  border-bottom: 16px solid var(--main-color);
+  padding-top: 5px;
 }
 #down .arr {
   border-bottom: 0;
-  border-top: 15px solid var(--main-color);
-  margin-top: 1px;
+  border-top: 16px solid var(--main-color);
+  padding-bottom: 5px;
 }
+
+@media (min-width: 768px) {
+  #up .arr {
+    border-top: 0;
+    border-bottom: 17px solid var(--main-color);
+  }
+  #down .arr {
+    border-bottom: 0;
+    border-top: 17px solid var(--main-color);
+  }
+}
+
+@media (min-width: 1024px) {
+  .arr {
+    border: 12px solid transparent;
+  }
+  #up .arr {
+    border-top: 0;
+    border-bottom: 19px solid var(--main-color);
+    padding-top: 1px;
+  }
+  #down .arr {
+    border-bottom: 0;
+    border-top: 19px solid var(--main-color);
+    padding-bottom: 1px;
+  }
+}
+
 /*** The styles for start button ***/
 #startButton:hover {
   background-color: rgba(61, 252, 102, 0.5);
