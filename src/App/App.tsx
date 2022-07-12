@@ -13,7 +13,7 @@ const App = () => {
       <div className="h-screen">
         <div className="relative mb-20">
           <svg
-            className="md:w-[350px] lg:w-96"
+            className="w-[320px] md:w-[350px] lg:w-96"
             viewBox="0 0 561 193"
             fill="none"
           >
@@ -25,16 +25,19 @@ const App = () => {
             />
           </svg>
           <div className="absolute top-9">
-            <h1 className="md:text-4xl lg:text-[40px] pl-5 primary-color">
+            <h1 className="text-3xl md:text-4xl lg:text-[40px] pl-5 primary-color">
               PomodorX
             </h1>
           </div>
         </div>
+        {/* <div className="block md:hidden w-full h-screen justify-center items-center">
+          {state === 0 ? <LoopInput /> : <Countdown />}
+        </div> */}
 
         <TimeStepsMenu state={state} />
       </div>
 
-      <div className="flex w-full h-screen justify-center items-center">
+      <div className="hidden md:flex w-full h-screen justify-center items-center">
         {state === 0 ? <LoopInput /> : <Countdown />}
       </div>
     </main>
