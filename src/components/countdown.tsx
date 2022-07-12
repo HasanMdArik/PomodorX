@@ -10,9 +10,9 @@ const footNote = [
   "Do something enjoying!",
   "Do something relaxing!",
 ];
-// Footnotes after the step finished
 
-const Countdown = () => {
+//? isSecond is used to differntiate between two countdown ids to update time
+const Countdown = ({ isSecond }: { isSecond: boolean }) => {
   const { timeSteps, runningStep, cancelTimer, startAlarm, startNextStep } =
     useMainContext();
 
@@ -23,7 +23,7 @@ const Countdown = () => {
 
   useLayoutEffect(() => {
     const countdownElement = document.getElementById(
-      "countdown"
+      isSecond ? "countdown2" : "countdown"
     ) as HTMLElement;
     let timeStep = timeSteps[runningStep];
     let alarmFired = false;
@@ -63,7 +63,11 @@ const Countdown = () => {
       }
     };
 
-    if (timeStep) {
+    if (
+      timeStep &&
+      ((isSecond && window.innerWidth >= 768) || // Figuring out if to run the setInterval or not
+        (!isSecond && window.innerWidth < 768)) // Will not run if the element is not shown
+    ) {
       updateCountdown();
       let countDownUpdateInterval = setInterval(() => {
         updateCountdown();
@@ -80,7 +84,7 @@ const Countdown = () => {
         {timeStepType[stepType]}
       </h2>
       <p
-        id="countdown"
+        id={isSecond ? "countdown2" : "countdown"}
         className="font-bold text-6xl md:text-8xl lg:text-9xl -mb-2 lg:mb-2"
       >
         --:--
