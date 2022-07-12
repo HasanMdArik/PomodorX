@@ -134,6 +134,10 @@ body {
 }
 
 /*** The Scrollbar related styles ***/
+#time-step-list-container {
+  scrollbar-width: 16px;
+  scrollbar-color: var(--primary-color) transparent;
+}
 #time-step-list-container::-webkit-scrollbar {
   width: 16px;
 }
