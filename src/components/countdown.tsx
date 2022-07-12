@@ -76,12 +76,12 @@ const Countdown = () => {
 
   return (
     <div className="flex flex-col items-center secondary-color">
-      <h2 className="font-extrabold text-3xl md:text-4xl lg:text-5xl mb-0 lg:mb-3">
+      <h2 className="font-extrabold text-4xl lg:text-5xl mb-0 lg:mb-3">
         {timeStepType[stepType]}
       </h2>
       <p
         id="countdown"
-        className="font-bold text-6xl md:text-8xl lg:text-9xl -mb-3 lg:mb-2"
+        className="font-bold text-6xl md:text-8xl lg:text-9xl -mb-2 lg:mb-2"
       >
         --:--
       </p>

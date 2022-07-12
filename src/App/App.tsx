@@ -30,7 +30,7 @@ const App = () => {
             </h1>
           </div>
         </div>
-        <div className="flex md:hidden w-full justify-center items-center mb-5">
+        <div className="flex md:hidden h-[172px] w-full justify-center items-center mb-5">
           {state === 0 ? <LoopInput /> : <Countdown />}
         </div>
 

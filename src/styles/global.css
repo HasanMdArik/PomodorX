@@ -8,8 +8,8 @@
 }
 
 body {
-  margin: 0;
-  padding: 0;
+  margin: 0 !important;
+  padding: 0 !important;
   font-family: "Proza Libre", sans-serif !important;
   font-weight: 600;
   color: var(--main-color);
@@ -192,7 +192,7 @@ body {
 }
 /*** The styles of loop-input ***/
 #loopCount {
-  @apply md:w-[150px] md:h-12 md:text-2xl lg:w-[200px] lg:h-14 lg:text-3xl;
+  @apply w-[130px] h-12 text-xl md:w-[150px]  md:text-2xl lg:w-[200px] lg:h-14 lg:text-3xl;
   border-radius: 20px;
   background-color: var(--primary-bg);
   padding: 0.25rem 1rem;
