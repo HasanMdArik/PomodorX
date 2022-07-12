@@ -192,12 +192,9 @@ body {
 }
 /*** The styles of loop-input ***/
 #loopCount {
-  width: 200px;
-  height: 54px;
+  @apply md:w-[150px] md:h-12 md:text-2xl lg:w-[200px] lg:h-14 lg:text-3xl;
   border-radius: 20px;
   background-color: var(--primary-bg);
-  font-size: 26px;
-  line-height: 32px;
   padding: 0.25rem 1rem;
 }
 

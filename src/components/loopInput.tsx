@@ -30,7 +30,10 @@ const LoopInput = () => {
   return (
     <div>
       <div className="flex items-center">
-        <label className="text-3xl mr-2 mb-0" htmlFor="loopCount">
+        <label
+          className="md:text-[1.625rem] lg:text-3xl mr-2 mb-0"
+          htmlFor="loopCount"
+        >
           Loop Count:
         </label>
         <div className="relative flex items-center">
@@ -75,9 +78,9 @@ const LoopInput = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center mt-3">
+      <div className="flex justify-center md:mt-2 lg:mt-3">
         <button
-          className="primary-bg main-border rounded-[1.25rem] text-3xl py-1.5 px-10"
+          className="primary-bg main-border rounded-[1.25rem] md:text-2xl lg:text-3xl md:px-6 md:py-1 lg:py-1.5 lg:px-10"
           id="startButton"
           disabled={isDisabled}
           onClick={() => {

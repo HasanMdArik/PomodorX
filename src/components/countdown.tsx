@@ -76,11 +76,16 @@ const Countdown = () => {
 
   return (
     <div className="flex flex-col items-center secondary-color">
-      <h2 className="font-extrabold text-5xl mb-3">{timeStepType[stepType]}</h2>
-      <p id="countdown" className="font-bold text-9xl mb-2">
+      <h2 className="font-extrabold md:text-4xl lg:text-5xl mb-0 lg:mb-3">
+        {timeStepType[stepType]}
+      </h2>
+      <p
+        id="countdown"
+        className="font-bold md:text-8xl lg:text-9xl -mb-3 lg:mb-2"
+      >
         --:--
       </p>
-      <p className="font-medium text-4xl mb-3">
+      <p className="font-medium md:text-3xl lg:text-4xl mb-0 lg:mb-3">
         {hasStepFinished ? "Click next to continue!" : footNote[stepType]}
       </p>
       <div className="flex">
@@ -90,7 +95,7 @@ const Countdown = () => {
               await startNextStep();
               setShowNext(false);
             }}
-            className="primary-bg primary-color primary-border rounded-[1.25rem] text-3xl py-1.5 px-6 mx-2"
+            className="primary-bg primary-color primary-border rounded-[1.25rem] md:text-2xl lg:text-3xl md:px-6 md:py-1 lg:py-1.5 lg:px-10 mx-2"
           >
             Next
           </button>
@@ -98,7 +103,7 @@ const Countdown = () => {
         {!hasStepFinished && (
           <button
             onClick={async () => await cancelTimer()}
-            className="primary-bg primary-color primary-border rounded-[1.25rem] text-3xl py-1.5 px-6 mx-2"
+            className="primary-bg primary-color primary-border rounded-[1.25rem] md:text-2xl lg:text-3xl md:px-6 md:py-1 lg:py-1.5 lg:px-10 mx-2"
           >
             Cancel
           </button>
