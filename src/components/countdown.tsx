@@ -97,7 +97,7 @@ const Countdown = () => {
         )}
         {!hasStepFinished && (
           <button
-            onClick={() => cancelTimer()}
+            onClick={async () => await cancelTimer()}
             className="primary-bg primary-color primary-border rounded-[1.25rem] text-3xl py-1.5 px-6 mx-2"
           >
             Cancel
