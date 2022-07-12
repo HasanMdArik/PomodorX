@@ -50,14 +50,12 @@ const TimeStepsMenu = () => {
   }, []);
 
   return (
-    <div className="h-full w-screen md:w-[20.625rem] lg:w-[23.75rem] rounded-l-3xl md:rounded-l-none rounded-r-3xl pt-7 md:pl-0 lg:pl-5 relative primary-color primary-bg">
+    <div className="h-full w-screen md:w-[20.625rem] lg:w-[23.75rem] rounded-l-3xl md:rounded-l-none rounded-r-3xl pt-4 md:pt-7 pl-3 lg:pl-5 relative primary-color primary-bg">
       <div className="md:pl-3 lg:pl-0">
         <h2 className="mb-1 text-4xl text-center md:text-left">Time Steps</h2>
         <div
-          className="mt-1 left-0 absolute primary-bg"
+          className="mt-1 h-[3px] w-full md:w-4/5 left-0 absolute primary-bg"
           style={{
-            height: "3px",
-            width: "80%",
             backgroundColor: primaryColors[state],
           }}
         />
@@ -65,9 +63,9 @@ const TimeStepsMenu = () => {
       <div
         id="time-step-list-container"
         data-color={"#1e7d33"}
-        className={"md:mt-5 lg:mt-8 font-medium "}
+        className="mt-3 md:mt-5 lg:mt-8 font-medium"
       >
-        <ul id="time-step-list" className="text-3xl list-disc list-inside">
+        <ul className="flex flex-col md:block items-center text-3xl list-disc list-inside">
           {steps}
         </ul>
       </div>

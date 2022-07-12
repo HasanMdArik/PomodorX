@@ -58,12 +58,9 @@ body {
 
 /*** The time list styles ***/
 #time-step-list-container {
+  overflow-x: hidden !important;
   overflow-y: scroll !important;
-  direction: rtl;
-  width: min(100%, 340px);
-}
-#time-step-list {
-  direction: ltr;
+  width: 100%;
 }
 
 /*** The time block styles ***/
@@ -84,7 +81,7 @@ body {
 
 .time {
   height: 52px;
-  width: 300px;
+  width: min(100%, 300px);
   border-radius: 0.5rem;
   overflow: hidden;
   margin: 0.4rem 0rem;
