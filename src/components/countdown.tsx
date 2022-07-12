@@ -1,6 +1,5 @@
 import React, { useLayoutEffect, useState } from "react";
 import { useMainContext } from "../contexts/mainContext";
-import { timeStepData } from "../data/dataTypes";
 
 // The time-step type name
 const timeStepType = ["Work Time", "Short Break", "Long Break"];
