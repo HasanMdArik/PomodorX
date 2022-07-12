@@ -95,6 +95,13 @@ body {
   margin: 0 0 0 -1.25rem;
 }
 
+/* To fix the firefox list element style bug */
+@-moz-document url-prefix() {
+  .time p {
+    margin: 0;
+  }
+}
+
 .time div {
   position: relative;
   background-color: rgba(0, 0, 0, 0.1);
