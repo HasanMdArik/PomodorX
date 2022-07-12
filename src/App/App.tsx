@@ -34,7 +34,7 @@ const App = () => {
           {state === 0 ? <LoopInput /> : <Countdown />}
         </div>
 
-        <TimeStepsMenu state={state} />
+        <TimeStepsMenu />
       </div>
 
       <div className="hidden md:flex w-full h-screen justify-center items-center">

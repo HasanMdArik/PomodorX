@@ -4,8 +4,8 @@ import { primaryColors } from "../../data/data";
 import { timeStepStateTypes } from "../../data/dataTypes";
 import TimeStepBlock from "./timeStepBlock";
 
-const TimeStepsMenu = ({ state }: { state: number }) => {
-  const { timeSteps, loopData } = useMainContext();
+const TimeStepsMenu = () => {
+  const { timeSteps, loopData, state } = useMainContext();
   const [steps, setSteps] = useState<Array<JSX.Element>>([]);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const TimeStepsMenu = ({ state }: { state: number }) => {
   return (
     <div className="h-full w-screen md:w-[20.625rem] lg:w-[23.75rem] rounded-l-3xl md:rounded-l-none rounded-r-3xl pt-7 md:pl-0 lg:pl-5 relative primary-color primary-bg">
       <div className="md:pl-3 lg:pl-0">
-        <h2 className="mb-1 text-4xl">Time Steps</h2>
+        <h2 className="mb-1 text-4xl text-center md:text-left">Time Steps</h2>
         <div
           className="mt-1 left-0 absolute primary-bg"
           style={{
