@@ -11,7 +11,7 @@ const App = () => {
   return (
     <main id="main" className={"flex " + stateBasedClassName[state]}>
       <div className="h-screen">
-        <div className="relative mb-20">
+        <div className="relative mb-5 md:mb-20">
           <svg
             className="w-[320px] md:w-[350px] lg:w-96"
             viewBox="0 0 561 193"
@@ -30,9 +30,9 @@ const App = () => {
             </h1>
           </div>
         </div>
-        {/* <div className="block md:hidden w-full h-screen justify-center items-center">
+        <div className="flex md:hidden w-full justify-center items-center mb-5">
           {state === 0 ? <LoopInput /> : <Countdown />}
-        </div> */}
+        </div>
 
         <TimeStepsMenu state={state} />
       </div>
