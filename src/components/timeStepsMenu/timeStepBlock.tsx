@@ -17,17 +17,25 @@ const stepContents: Array<string> = [
 const TimeStepBlock = ({
   stepState,
   stepType,
-  timePassed = 0,
-  isNew = false,
+  index,
+  timePassed,
+  isNew,
 }: {
   stepState: timeStepStateTypes;
   stepType: timeStepTypes;
   timePassed: number;
   isNew: boolean;
+  index: number;
 }) => {
   const [time, setTime] = useState<string>("");
   useEffect(() => {
     setTime((timePeriods[stepType] - timePassed).toString() + "s");
+    const progressBar = document.getElementById(`progress-${index}`);
+    let progressPercentage =
+      ((timePassed * 100) / timePeriods[stepType]).toString() + "%";
+    if (progressBar) {
+      progressBar.style.width = progressPercentage;
+    }
   }, [timePassed]);
 
   return (
@@ -48,7 +56,7 @@ const TimeStepBlock = ({
           <p>{stepContents[stepType]}</p>
         </li>
       </div>
-      <div className="progress">
+      <div id={`progress-${index}`} className="progress">
         <li>
           <p>{stepContents[stepType]}</p>
         </li>

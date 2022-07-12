@@ -32,6 +32,7 @@ const TimeStepsMenu = () => {
           stepType={timeStep.type}
           timePassed={timePassed}
           isNew={index + 1 > loopData.pastLoopCount * 2}
+          index={index}
           key={index}
         />
       );
